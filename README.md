@@ -8,6 +8,13 @@ The bot includes several modules that can be used independently or in combinatio
 
 **Harvesting bot**: This module automates harvesting resources from various locations in the game world. It can detect resource nodes using image recognition and then navigate to them, harvest them, and deposit the resources in a storage container.
 
+
+### - Run: 
+After you install all the requirements :
+  Run : python main.py
+
+
+
 ### - Future projects: 
 
 **Combat bot**: This module automates combat with monsters in the game. It can detect monsters using image recognition, select spells or attacks to use, and move around the game world to avoid attacks.
