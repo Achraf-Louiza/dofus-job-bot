@@ -20,10 +20,10 @@ class BotApp :
     # Bot messages field
     self.bot_message_box = tk.Text(self.root, height=20, width=60, wrap=tk.WORD , state='disabled') # State indicates that text inside field can't be changed by user
     self.bot_message_box.grid(row=1, column=0, sticky="NSEW")
-    scrollbar = tk.Scrollbar(self.root , command = self.bot_message_box.yview )
-    scrollbar.grid(row=1, column=1, sticky="NS")
+    self.bot_message_box_scrollbar = tk.Scrollbar(self.root , command = self.bot_message_box.yview )
+    self.bot_message_box_scrollbar.grid(row=1, column=1, sticky="NS")
 
-    self.bot_message_box.config(yscrollcommand=scrollbar.set)
+    self.bot_message_box.config(yscrollcommand=self.bot_message_box_scrollbar.set)
 
     self.bot_messages = ""
     for a in range(50):
