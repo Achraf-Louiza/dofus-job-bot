@@ -23,8 +23,7 @@ class Monitor :
 
         if (self.windows == None) :
           self.windows = []
-        else :
-          print("[x] - GETTING ALL WINDOWS WITH SUCCESS")
+          
     
 
     def get_dofus_windows(self) -> list[Window] :
@@ -42,5 +41,5 @@ class Monitor :
       elif (self.os == "windows") :
          print("WINDOWS..")
         
-      print("[x] - GETTING DOFUS WINDOWS")
+      print("[x] - GETTING DOFUS WINDOWS : FOUND "+ str(len(windows_dofus_list))+" DOFUS WINDOWS")
       return windows_dofus_list
