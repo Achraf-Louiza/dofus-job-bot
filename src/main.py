@@ -1,5 +1,6 @@
 from botapp import BotApp
 from config import *
+import sys
 
 
 '''
@@ -10,13 +11,13 @@ from config import *
       - python main.py windows          ---> WILL RUN TKINTER APP DEPENDING ON WINDOWS OS
 
 '''
-def main():
-  if (argv[1]) :
-    BotApp(argv[1])
+def main(os):
+  if (os) :
+    BotApp(os[0])
   else :
     BotApp(OS_TYPE)
   
 if __name__ == "__main__":
-  main()
+  main(sys.argv[1:])
 
 

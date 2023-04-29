@@ -27,15 +27,12 @@ class Monitor :
     
 
     def get_dofus_windows(self) -> list[Window] :
-      
       windows_dofus_list = []
-
       ## MACOS  
       if (self.os == "macos") :
         for window in self.windows :
             if window[Quartz.kCGWindowOwnerName] == "Dofus" :
                 windows_dofus_list.append(Window("Dofus",window))
-
 
       ## WINDOWS 
       elif (self.os == "windows") :

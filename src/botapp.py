@@ -1,37 +1,39 @@
 from monitor import Monitor 
 from window import Window
 import tkinter as tk
-import sys
-import os
-
-
-
-
-
 
 class BotApp :
 
   def __init__(self, os: str):
 
     # Start Tkinter app instance
-    self.master = tk.Tk()
+    self.root = tk.Tk()
 
     # Set Tkinter app params
-    self.master.geometry("900x400+300+200")
-    self.master.title("DOFUS BOT V1")
-
+    self.root.geometry("900x400+300+200")
+    self.root.title("DOFUS BOT V1")
+    
     # Home message
-    self.home_label = tk.Label(self.master, text="OS : " + os).grid(row=1, column=0, padx=10, pady=10)
+    self.home_label = tk.Label(self.root, text="OS : " + os)
+    self.home_label.grid(row=0, column=0, padx=10, pady=10)
 
     # Bot messages field
+    self.bot_message_box = tk.Text(self.root, height=20, width=60, wrap=tk.WORD , state='disabled') # State indicates that text inside field can't be changed by user
+    self.bot_message_box.grid(row=1, column=0, sticky="NSEW")
+    scrollbar = tk.Scrollbar(self.root , command = self.bot_message_box.yview )
+    scrollbar.grid(row=1, column=1, sticky="NS")
+
+    self.bot_message_box.config(yscrollcommand=scrollbar.set)
+
     self.bot_messages = ""
-    self.bot_message_box = tk.Label(self.master, height=20, width=60, text=self.bot_messages , anchor='sw', background="#44403c")
-    self.bot_message_box.grid(row=2, column=0 ,padx=10, pady=10)
     for a in range(50):
       self.bot_messages += "\n[x] - STARTING MAC OS QUARTZ"
-    self.bot_message_box.configure(text=self.bot_messages)
-    
 
-    self.master.mainloop()
+    self.bot_message_box.configure(state='normal')            # Make text in field changeable
+    self.bot_message_box.insert(tk.END, self.bot_messages)    # Change text
+    self.bot_message_box.configure(state='disabled')          # Disable changing text
+
+    # Start event listener loop
+    self.root.mainloop()
     
 
