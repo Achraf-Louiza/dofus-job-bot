@@ -1,5 +1,3 @@
-import pyautogui as pag
-import pygetwindow as pgw
 import Quartz
 
 

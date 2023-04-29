@@ -1,9 +1,14 @@
+from PIL import Image
 
 
 
 
 
 class Window :
+    """ 
+      A class for the window object
+    
+    """
     
     def __init__(self, name: str , window) -> None:
       self.name = name
@@ -13,11 +18,11 @@ class Window :
       else :
         print("[x] - Failed initiating a Window")
 
-    def focus() -> bool :
+    def focus(self) -> bool :
       return False
 
-    def screenshot(left: int, top: int, right: int, bot: int)  -> Image :
+    def screenshot(self,left: int, top: int, right: int, bot: int)  -> Image :
       return None 
 
-    def maximize() -> bool :
-      return None
+    def maximize(self) -> bool :
+      return False
