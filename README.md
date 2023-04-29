@@ -10,8 +10,10 @@ The bot includes several modules that can be used independently or in combinatio
 
 
 ### - Run: 
-After you install all the requirements :<br>
-  Run : python main.py
+After you install all the requirements run :<br>
+- python main.py          
+- python main.py macos
+- python main.py windows
 
 
 
