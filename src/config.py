@@ -1,3 +1,8 @@
+import platform
+
+# Get os type 
+OS_TYPE = platform.system()
+
 # Wheat map positions file path
 RECOLTABLE_MAP_POSITIONS_FILE_PATH = lambda recoltable: f"../data/{recoltable}_map_positions.csv"
 
