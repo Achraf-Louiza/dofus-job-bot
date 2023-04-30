@@ -95,13 +95,13 @@ class BotApp :
     # self.write_random_messages_in_message_box()
 
     # Initiating a monitor
-    self.monitor = Monitor(1,self.os)
+    self.monitor = Monitor(1)
     self.print_message_in_bot_message_box( "[x] - " , "purple")
     if (self.monitor):
       self.print_message_in_bot_message_box( "STARTING MONITOR 1\n" , "green")
 
       # Getting Dofus windows
-      dofus_windows = self.monitor.init_dofus_windows()
+      dofus_windows = self.monitor.get_dofus_windows()
       self.print_message_in_bot_message_box( "[x] - " , "purple")
       count_dofus_windows = len(dofus_windows)
       if (count_dofus_windows != 0) :

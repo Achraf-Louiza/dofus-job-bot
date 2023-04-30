@@ -3,6 +3,8 @@ from logs.logs import Logs
 
 # Get os type 
 OS = platform.system()
+OS_MAC = 'Darwin'
+OS_WINDOWS = 'Windows'
 
 # Wheat map positions file path
 RECOLTABLE_MAP_POSITIONS_FILE_PATH = lambda recoltable: f"../data/{recoltable}_map_positions.csv"

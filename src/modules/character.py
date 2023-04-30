@@ -1,26 +1,24 @@
-
+from action import Action
 from map_coordinator import MapCoordinator
 
-
+  
+  
 class Character:
     
     def __init__(self) -> None:
         pass
     
-    def get_current_coordinates(self) -> None:
-           pass
-       
-    def has_moved(self) -> bool:
-        pass
- 
-    def update_coordinates(self, action: str) -> None:
-        pass
+
+    def execute_action(self,action : Action)->bool :
+        return action.do()
     
-    def wait_humain_like(self) -> None:
-        pass
-    
-    def click_on(self, target_pixel_coordinates: list) -> None:
-        pass
+    def execute_strategy(self, strategy: list[Action]) -> bool :
+        c = 0
+        executed = True
+        while (c<len(strategy) and executed ):
+            executed = self.execute_action(strategy[c])!=False
+            c+=1
+        return executed 
  
     
 '''
