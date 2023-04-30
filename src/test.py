@@ -1,4 +1,4 @@
-from monitor import Monitor 
+from modules.monitor import Monitor 
 import Quartz
 import subprocess
 import psutil
