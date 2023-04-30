@@ -1,20 +1,14 @@
 import platform
-<<<<<<< HEAD
-from modules.logs.logs import Logs
-=======
-# from modules.logs.logs import Logs
->>>>>>> main
+import sys, os
+sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../data/logs'))) ; from logs import Logs
 
 # Get os type 
 OS = platform.system()
 OS_MAC = 'Darwin'
 OS_WINDOWS = 'Windows'
 
-<<<<<<< HEAD
 # Wheat map positions file path
-=======
 # Recoltable map positions file path-------------------------------------------------------------------
->>>>>>> main
 RECOLTABLE_MAP_POSITIONS_FILE_PATH = lambda recoltable: f"../data/{recoltable}_map_positions.csv"
 
 # "Dofosdb" api url for web scraping recoltable map positions.
@@ -34,11 +28,9 @@ LEFT = (194, 358)
 DOWN = (650,680)
 UP = (650, 30)
 
-<<<<<<< HEAD
 
 # Logs object instance
 LOGS = Logs()
-=======
 # Map position (width or height) percentage for box edges ----------------------------------------
 P_MAP_LEFT = 0
 P_MAP_TOP = 0
@@ -72,4 +64,3 @@ P_SCAN_Y_SKIP = 0
 
 # Logs object instance
 # LOGS = Logs()
->>>>>>> main

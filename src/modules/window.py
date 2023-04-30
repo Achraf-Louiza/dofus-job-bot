@@ -1,11 +1,8 @@
 from PIL import Image
-<<<<<<< HEAD
 from config import *
-=======
 import sys
 import os
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
->>>>>>> main
 import subprocess
 
 class Window :
@@ -13,7 +10,6 @@ class Window :
       A class for the window object
     
     """
-<<<<<<< HEAD
 
     def __init__(self, id: int, name: str  ,window  ) -> None:
       self.id = id
@@ -72,7 +68,6 @@ class WindowWindows(Window) :
   
   def is_visible(self) -> bool :
     return False
-=======
     def __init__(self, _id: int, name: str, window):
       self.id = _id
       self.name = name
@@ -116,4 +111,3 @@ class WindowWindows(Window) :
   
   def maximize(self) -> bool :
     return self.window.maximize()
->>>>>>> main

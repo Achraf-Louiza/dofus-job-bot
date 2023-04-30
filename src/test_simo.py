@@ -1,5 +1,5 @@
-from modules.monitor import * 
-from modules.window import * 
+from modules.monitor import Monitor
+from modules.window import Window 
 import Quartz
 import subprocess
 import psutil

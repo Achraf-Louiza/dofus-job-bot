@@ -1,10 +1,11 @@
 import Quartz
-from window import Window
+import sys
+import os
+sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.'))) ; from window import Window
 from config import *
 import Quartz.CoreGraphics as CG
 import subprocess
-import sys
-import os
+
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
 import pyautogui
 import pandas
@@ -14,11 +15,6 @@ import numpy as np
 import cv2 
 
 class Monitor : 
-
-
-
-
-    
     """ 
       A class for all the windows open in a monitor
 
