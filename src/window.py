@@ -11,7 +11,8 @@ class Window :
     
     """
     
-    def __init__(self, name: str , id: int ,window) -> None:
+    def __init__(self, name: str , id: int ,window , os:str) -> None:
+      self.os = os
       self.id = id
       self.name = name
       if (window) :
@@ -21,7 +22,19 @@ class Window :
         LOGS.log_error("[x] - Failed initiating a Window")
 
     def focus(self) -> bool :
-      return False
+      try :
+        return True
+      except :
+        return False
+      
+    def is_visible(self) -> bool :
+      try :
+        if (self.os == 'Darwin'):
+          return self.window['kCGWindowAlpha'] == '0.0'
+
+      except Exception as e :
+        print(e)
+        return 
 
     def screenshot(self,left: int, top: int, right: int, bot: int)  -> Image :
       return None 

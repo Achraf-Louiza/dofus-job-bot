@@ -1,5 +1,4 @@
 from monitor import Monitor 
-from window import Window
 from config import *
 import tkinter as tk
 
@@ -40,7 +39,7 @@ class BotApp :
   ''' PRIVATE METHOD '''
   def customised_bot_message_box(self):
     try :
-      bot_message_box = tk.Text(self.root, height=26, width=60, wrap=tk.WORD , state='disabled') # Disable changing text
+      bot_message_box = tk.Text(self.root, height=29, width=60, wrap=tk.WORD , state='disabled') # Disable changing text
       bot_message_box.grid(row=0, column=0,  padx=10, pady=10 , sticky="NSEW")
       bot_message_box.config(highlightthickness=0) # Disable white highlighting when clicking on field
 
@@ -102,7 +101,7 @@ class BotApp :
       self.print_message_in_bot_message_box( "STARTING MONITOR 1\n" , "green")
 
       # Getting Dofus windows
-      dofus_windows = self.monitor.get_dofus_windows()
+      dofus_windows = self.monitor.init_dofus_windows()
       self.print_message_in_bot_message_box( "[x] - " , "purple")
       count_dofus_windows = len(dofus_windows)
       if (count_dofus_windows != 0) :

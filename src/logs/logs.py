@@ -11,3 +11,6 @@ class Logs :
     file = open("logs/build.log", "a")
     file.write("\n"+message)
     file.close()
+
+  def log_console(self,message: str)->None :
+    print(message)

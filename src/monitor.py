@@ -1,8 +1,8 @@
 import Quartz
 from window import Window
 from config import *
-import objc
-from AppKit import NSWorkspace, NSWindow
+import Quartz.CoreGraphics as CG
+import subprocess
 
 class Monitor : 
     """ 
@@ -24,14 +24,10 @@ class Monitor :
               # app_windows = app['NSApplicationWindows']
               # if app_windows:
               # windows += app
+          dofus_wins_pids = subprocess.check_output(['osascript', '-e', 'tell application "System Events" to get unix id of every process whose name contains "Dofus"']).decode().strip().split(', ')
           self.windows = []
-          # visible_windows = filter(lambda w: w.isVisible(), windows)
-          windows = Quartz.CGWindowListCopyWindowInfo(Quartz.kCGWindowListOptionOnScreenOnly , Quartz.kCGNullWindowID)
-          window_id = 1
-          for window in windows : 
-            if 'kCGWindowOwnerName' in window:
-              self.windows.append(Window(window['kCGWindowOwnerName'],window_id,window))
-              window_id+=1
+          # for pid in dofus_wins_pids : 
+          #   self.windows.append()
           
           
           
@@ -45,12 +41,8 @@ class Monitor :
           
     
 
-    def get_dofus_windows(self) -> list[Window] :
-      dofus_windows_list = []
-      for window in self.windows :
-          if window.name == "Dofus" :
-              dofus_windows_list.append(window)
-      LOGS.log_build("[x] - Found "+str(len(dofus_windows_list))+" Dofus windows")
-      return dofus_windows_list
+    def init_dofus_windows(self) -> list[Window] :
+      return []
+    
 
     

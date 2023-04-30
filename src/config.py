@@ -2,7 +2,7 @@ import platform
 from logs.logs import Logs
 
 # Get os type 
-OS_TYPE = platform.system()
+OS = platform.system()
 
 # Wheat map positions file path
 RECOLTABLE_MAP_POSITIONS_FILE_PATH = lambda recoltable: f"../data/{recoltable}_map_positions.csv"
