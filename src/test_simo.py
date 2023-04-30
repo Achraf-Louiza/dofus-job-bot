@@ -1,5 +1,5 @@
-from modules.monitor import Monitor
-from modules.window import Window 
+from modules.monitor import *
+from modules.window import * 
 import Quartz
 import subprocess
 import psutil
@@ -9,7 +9,7 @@ def main():
   print('YES')
   MONITOR = MonitorMac(1)
   
-  DOFUS_WINS = MONITOR.init_dofus_windows()
+  DOFUS_WINS = MONITOR._get_dofus_windows()
   # for win in DOFUS_WINS :
   #   print('[x] - IS VISIBLE',win.is_visible())
 
