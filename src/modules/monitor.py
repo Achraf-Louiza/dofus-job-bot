@@ -1,10 +1,8 @@
 import Quartz
 from window import Window
-<<<<<<< HEAD
 from config import *
 import Quartz.CoreGraphics as CG
 import subprocess
-=======
 import sys
 import os
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
@@ -14,12 +12,15 @@ import Quartz.CoreGraphics as CG
 from PIL import Image, ImageGrab
 import numpy as np
 import cv2 
->>>>>>> main
 
 class Monitor : 
+
+
+
+
+    
     """ 
       A class for all the windows open in a monitor
-<<<<<<< HEAD
 
       IMPORTANT NOTE : 
         The Window object returned by PyAutoGUI is a snapshot of the window at the time it was captured, 
@@ -69,9 +70,8 @@ class Monitor :
     
 
     
-=======
     
-    """
+    
         
     def __init__(self, _id: int):
         self.id = _id
@@ -270,4 +270,3 @@ class MonitorWindows(Monitor):
         Simulates a left-click on the mouse at the current cursor position.
         """
         pyautogui.click(button='left')
->>>>>>> main
