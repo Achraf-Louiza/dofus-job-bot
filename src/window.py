@@ -1,4 +1,5 @@
 from PIL import Image
+from config import *
 
 
 
@@ -10,13 +11,14 @@ class Window :
     
     """
     
-    def __init__(self, name: str , window) -> None:
+    def __init__(self, name: str , id: int ,window) -> None:
+      self.id = id
       self.name = name
       if (window) :
         self.window = window
-        print("[x] - Initiated a Window") 
+        LOGS.log_build("[x] - Building Window : "+name) 
       else :
-        print("[x] - Failed initiating a Window")
+        LOGS.log_error("[x] - Failed initiating a Window")
 
     def focus(self) -> bool :
       return False

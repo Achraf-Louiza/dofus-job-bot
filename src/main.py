@@ -16,6 +16,9 @@ def main(os):
     BotApp(os[0])
   else :
     BotApp(OS_TYPE)
+
+  LOGS.log_build("[x] - Quitted Tkinter app")
+
   
 if __name__ == "__main__":
   main(sys.argv[1:])

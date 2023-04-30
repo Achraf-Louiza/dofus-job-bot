@@ -1,4 +1,5 @@
 import platform
+from logs.logs import Logs
 
 # Get os type 
 OS_TYPE = platform.system()
@@ -17,3 +18,7 @@ RIGHT = (1103, 389)
 LEFT = (194, 358)
 DOWN = (650,680)
 UP = (650, 30)
+
+
+# Logs object instance
+LOGS = Logs()
