@@ -1,5 +1,5 @@
 import platform
-from logs.logs import Logs
+from modules.logs.logs import Logs
 
 # Get os type 
 OS = platform.system()
