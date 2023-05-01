@@ -1,7 +1,7 @@
 from PIL import Image
 import sys
 import os
-sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
+sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; from config import *
 import subprocess
 
 class Window :
@@ -35,26 +35,26 @@ class Window :
 
 class WindowMac(Window) :
   
-  def __init__(self, id: int, name: str, window) -> None:
-    super().__init__(id, name, window)
+ def __init__(self, id: int, name: str, window) -> None:
+  super().__init__(id, name, window)
 
-  def focus(self) -> bool :
-   try :
-    if (OS == OS_MAC) :
-     if (subprocess.run(['osascript', '-e', 'tell application "System Events" to set frontmost of (every process whose unix id is '+self.pid+') to true'], check=True).returncode != 0) :     
-       return True
-     else : 
-      return False
-   except : 
-    return False
-    
-  def is_visible(self) -> bool :
-   try :
-    if (OS == 'Darwin'):
-     return self.window['kCGWindowAlpha'] == '0.0'
-   except :
-    return False
-    
+ def focus(self) -> bool :
+  try :
+   if (OS == OS_MAC) :
+    if (subprocess.run(['osascript', '-e', 'tell application "System Events" to set frontmost of (every process whose unix id is '+self.pid+') to true'], check=True).returncode != 0) :     
+     return True
+    else : 
+     return False
+  except : 
+   return False
+     
+ def is_visible(self) -> bool :
+  try :
+   if (OS == 'Darwin'):
+    return self.window['kCGWindowAlpha'] == '0.0'
+  except :
+   return False
+   
 
 
     
@@ -92,8 +92,8 @@ class WindowMac(Window) :
   def maximize(self) -> bool:
    script = """
      tell application "System Events"
-         set frontmost of the first process whose unix id is {0} to true
-         tell application "System Events" to keystroke "f" using {control down, command down}
+      set frontmost of the first process whose unix id is {0} to true
+      tell application "System Events" to keystroke "f" using {control down, command down}
      end tell
      """.format(self.id)
    return (subprocess.run(['osascript', '-e', script], check=True).returncode != 0)
