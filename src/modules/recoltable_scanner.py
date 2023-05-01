@@ -93,6 +93,6 @@ class RecoltableScanner:
                         if recolt:
                             monitor.click_on_mouse()
                             time.sleep(3)
-        df = pd.DataFrame({'name': recoltable_names, 'x': x_coords, 'y': y_coords})
+        df = pd.DataFrame({'recoltable': recoltable_names, 'x': x_coords, 'y': y_coords})
         return df
         

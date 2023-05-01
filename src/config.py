@@ -10,6 +10,7 @@ OS_WINDOWS = 'Windows'
 # Wheat map positions file path
 # Recoltable map positions file path-------------------------------------------------------------------
 RECOLTABLE_MAP_POSITIONS_FILE_PATH = lambda recoltable: f"../data/{recoltable}_map_positions.csv"
+RECOLTABLE_PIXEL_COORDINATES_FILE_PATH = lambda map_pos: f"../data/recoltable_pixel_coordinates/{map_pos}.csv" 
 
 # "Dofosdb" api url for web scraping recoltable map positions.
 DOFUSDB_API_URL =  "https://api.dofusdb.fr/recoltable"
@@ -19,8 +20,8 @@ NMAX_RESPONSES = 91
 
 # Recoltables
 RECOLTABLE_NAMES = ['ble', 'avoine', 'houblon']
-STR_RECOLTABLE_AVAILABLE = ['fauch']
-STR_RECOLTABLE_UNAVAILABLE = ['puis']
+STR_RECOLTABLE_AVAILABLE = 'fauch'
+STR_RECOLTABLE_UNAVAILABLE = 'puis'
 
 # Move from map position to another : You can only move RIGHT, LEFT, UP, DOWN.--------------------
 RIGHT = (1103, 389)
