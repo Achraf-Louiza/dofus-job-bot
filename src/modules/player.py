@@ -22,6 +22,14 @@ class Player:
         # Characters 
         self.characters = self.create_characters()
     
-    def create_characters(self):
+    def _read_destination_coords(self):
         pass
    
+    def _init_characters(self):
+        pass
+
+    def _read_characters_destinations_coords(self):
+        pass
+
+    def run_strategy(self, actionList: Action):
+        pass

@@ -4,7 +4,7 @@ from action import Action
   
 class Character:
     
-    def __init__(self) -> None:
+    def __init__(self, _id: int, name: str, window) -> None:
         pass
     
 
