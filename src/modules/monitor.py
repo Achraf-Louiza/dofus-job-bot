@@ -5,16 +5,14 @@ sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(
 from config import *
 import Quartz.CoreGraphics as CG
 import subprocess
-
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
 import pyautogui
-import pandas
 import Quartz.CoreGraphics as CG
 from PIL import Image, ImageGrab
 import numpy as np
 import cv2 
 import os, sys
-sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
+
 
 class Monitor : 
     """ 
@@ -32,7 +30,7 @@ class Monitor :
     """
         
     def __init__(self, id: int ) -> None:
-        
+    
         self.id = id
         LOGS.log_build("[x] - Initiating Monitor "+str(id)+ " for os "+OS)
 
