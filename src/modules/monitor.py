@@ -241,8 +241,7 @@ class MonitorMac(Monitor):
     
     def __init__(self, _id: int):
         super().__init__(_id)
-        self._get_dofus_windows()
-        self._get_monitor_offset()
+        
         
     def _get_dofus_windows(self):   
         """
