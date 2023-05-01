@@ -207,21 +207,26 @@ class Monitor :
         except:
             black_box=np.array([[]])
         return black_box
+    
+    def get_dofus_windows(self) :
+        dofus_windows = []
+        for window in self.windows :
+            if window.name == 'Dofus' :
+                dofus_windows.append(window)
+        return dofus_windows
         
 
 class MonitorMac(Monitor):
     
     def __init__(self, _id: int):
-        super().__init__(_id)
-        
-    def _get_dofus_windows(self):        
+        self.windows = []
+        self.id = _id    
         windows_snapshot = Quartz.CGWindowListCopyWindowInfo(Quartz.kCGWindowListOptionAll, Quartz.kCGNullWindowID)
         for i, window in enumerate(windows_snapshot) :
             my_window = Window(i, window['kCGWindowOwnerName'],window)
-            self.windows.append(my_window)
+        self.windows.append(my_window)
     
-    def _get_monitor_offset():
-        pass
+    
     
     
 class MonitorWindows(Monitor):

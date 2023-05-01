@@ -9,7 +9,8 @@ def main():
   print('YES')
   MONITOR = MonitorMac(1)
   
-  DOFUS_WINS = MONITOR._get_dofus_windows()
+  DOFUS_WINS = MONITOR.get_dofus_windows()
+
   # for win in DOFUS_WINS :
   #   print('[x] - IS VISIBLE',win.is_visible())
 
