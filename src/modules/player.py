@@ -1,8 +1,7 @@
 from config import UP, DOWN, RIGHT, LEFT
 import pyautogui
 import numpy as np
-from screenshot_handler import ScreenshotHandler
-from character import Character
+from pathfinder import Pathfinder
 
 class Player:
     """
@@ -10,17 +9,9 @@ class Player:
     
     """
     def __init__(self):
-        # Map & pixel coords
-        self.map_x, self.map_y = None, None
-        self.pixel_x, self.pixel_y = None, None
-        # Monitor ID
-        self.monitor_id = monitor_id
-        # Screenshot handler
-        self.screenshot = ScreenshotHandler(monitor_id)
-        # Number of accounts 
-        self.n_accounts = n_accounts
-        # Characters 
-        self.characters = self.create_characters()
+        pathfinder = Pathfinder()
+        
+        
     
     def create_characters(self):
         pass

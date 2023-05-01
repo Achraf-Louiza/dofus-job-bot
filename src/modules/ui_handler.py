@@ -26,7 +26,7 @@ class UIHandler:
         str
         Text containing current map position    
         """
-        screenshot = self.screenshot_handler.get_box_map_position()
+        screenshot = self.monitor.get_box_map_position()
         text = self.recognize_text(screenshot, config.COORDINATES_CHARS)
         coords = self.parse_map_position(text)
         return coords
@@ -41,7 +41,7 @@ class UIHandler:
         Text near mouse current pixel coordinates
         
         """
-        screenshot = self.screenshot_handler.get_box_near_cursor_position()
+        screenshot = self.monitor.get_box_near_cursor_position()
         text = self.recognize_text(screenshot, config.ALPHABET_CHARS)
         return text
     
