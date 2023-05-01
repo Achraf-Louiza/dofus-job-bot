@@ -1,5 +1,4 @@
 import Quartz
-<<<<<<< HEAD
 import sys
 import os
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.'))) ; from window import Window
@@ -8,9 +7,6 @@ import Quartz.CoreGraphics as CG
 import subprocess
 
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
-=======
-from window import Window
->>>>>>> 6574c48e1f07046b8972089a85f04120ec10d577
 import pyautogui
 import pandas
 import Quartz.CoreGraphics as CG
@@ -34,7 +30,6 @@ class Monitor :
         the appropriate library or system call.
     
     """
-<<<<<<< HEAD
         
     def __init__(self, id: int ) -> None:
         
@@ -76,9 +71,6 @@ class Monitor :
     
     
         
-=======
-    
->>>>>>> 6574c48e1f07046b8972089a85f04120ec10d577
     def __init__(self, _id: int):
         self.id = _id
         # Attributes that need to be defined in subsclasses
@@ -248,10 +240,6 @@ class Monitor :
 class MonitorMac(Monitor):
     
     def __init__(self, _id: int):
-<<<<<<< HEAD
-        self.windows = []
-        self.id = _id    
-=======
         super().__init__(_id)
         self._get_dofus_windows()
         self._get_monitor_offset()
@@ -261,22 +249,18 @@ class MonitorMac(Monitor):
         Gets the Dofus windows associated with this monitor.
         
         """
->>>>>>> 6574c48e1f07046b8972089a85f04120ec10d577
         windows_snapshot = Quartz.CGWindowListCopyWindowInfo(Quartz.kCGWindowListOptionAll, Quartz.kCGNullWindowID)
         for i, window in enumerate(windows_snapshot) :
             my_window = Window(i, window['kCGWindowOwnerName'],window)
         self.windows.append(my_window)
     
     
-<<<<<<< HEAD
-=======
     def _get_monitor_offset():
         """
         Gets monitor top left coordinates
 
         """
         pass
->>>>>>> 6574c48e1f07046b8972089a85f04120ec10d577
     
     
 class MonitorWindows(Monitor):
