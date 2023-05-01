@@ -1,30 +1,38 @@
 from action import Action
+from ui_handler import UIHandler
+import numpy as np
 
-  
-  
 class Character:
     
-    def __init__(self) -> None:
-        pass
-    
+    def __init__(self, _id: int, name: str, level: int, is_subscribed: bool, ui_handler: UIHandler) -> None:
+        self.id = _id
+        self.name = name
+        self.level = level
+        self.is_subscribed = is_subscribed
+        self.ui_handler = ui_handler
+        self.map_coords = ui_handler.extract_current_map_position(_id)
 
-    def execute_action(self,action : Action)->bool :
+
+    def execute_action(self, action : Action) -> bool :
         return action.do()
     
-    def execute_strategy(self, strategy: list[Action]) -> bool :
+    def execute_strategy(self, strategy: list) -> bool :
         c = 0
         executed = True
         while (c<len(strategy) and executed ):
             executed = self.execute_action(strategy[c])!=False
             c+=1
         return executed 
- 
+    
+    def has_moved(self):
+        new_map_coords = self.ui_handler.extract_current_map_position(self.id)
+        if self.map_coords[0] != new_map_coords[0] or self.map_coords[1] != new_map_coords[1]:
+            return True
+        return False
+       
     
 '''
-def has_moved(screenshots):
-    diff = (np.sum(np.array(screenshots[-1])-np.array(screenshots[-2])))
-    print(diff)
-    return False if abs(diff) < 10000 else True
+
 
 def click_on(target):
     x1, y1 = pyautogui.position()

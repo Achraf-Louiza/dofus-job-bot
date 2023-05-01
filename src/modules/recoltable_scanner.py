@@ -2,9 +2,10 @@ import numpy as np
 import pyautogui
 from monitor import Monitor
 from ocr import OCR
-import config
 import time
 import pandas as pd
+import sys, os
+sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
 
 class RecoltableScanner:
     """

@@ -1,4 +1,5 @@
 import Quartz
+<<<<<<< HEAD
 import sys
 import os
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.'))) ; from window import Window
@@ -7,12 +8,17 @@ import Quartz.CoreGraphics as CG
 import subprocess
 
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
+=======
+from window import Window
+>>>>>>> 6574c48e1f07046b8972089a85f04120ec10d577
 import pyautogui
 import pandas
 import Quartz.CoreGraphics as CG
 from PIL import Image, ImageGrab
 import numpy as np
 import cv2 
+import os, sys
+sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
 
 class Monitor : 
     """ 
@@ -28,6 +34,7 @@ class Monitor :
         the appropriate library or system call.
     
     """
+<<<<<<< HEAD
         
     def __init__(self, id: int ) -> None:
         
@@ -69,29 +76,51 @@ class Monitor :
     
     
         
+=======
+    
+>>>>>>> 6574c48e1f07046b8972089a85f04120ec10d577
     def __init__(self, _id: int):
         self.id = _id
         # Attributes that need to be defined in subsclasses
         self.windows = []
         self.y_offset = 0
         self.x_offset = 0
-        
+    
     def _get_dofus_windows(self):
         """
         Gets the Dofus windows associated with this monitor.
+        
+        """
+        pass
+        
+    def _get_monitor_offset(self):
+        """
+        Gets monitor top left coordinates
+
         """
         pass
     
-    def _get_monitor_offset(self):
+    def move_cursor(self, coord_x: int, coord_y: int):
+        pass
+    
+    def click_on_mouse(self):
         pass
     
     def focus_on_window(self, window_id: int):
+        """ 
+        Switches focus to the specified window identified by `window_id`.
+        
+        PARAMETERS
+        ----------
+        window_id: int
+            The window id corresponding to the target window
+        """
         self.windows[window_id].focus()
-    
+        
     def get_box(self, p_left: float, p_top: float, p_right: float, p_bottom: float) -> Image:
         """
         Screenshots the box defined by the coordinates and return an Image
-
+        
         Parameters
         ----------
         p_left : float
@@ -102,12 +131,12 @@ class Monitor :
             Percentage of width for right x pixel coordinate
         p_bottom : float
             Percentage of height for bottom y pixel coordinate
-
+        
         Returns
         -------
         Image
             Image of the box's screenshot
-
+        
         """
         # Define the region of the screen to capture as a percentage of the screen size
         left = int(self.width * p_left) + self.x_offset
@@ -219,14 +248,35 @@ class Monitor :
 class MonitorMac(Monitor):
     
     def __init__(self, _id: int):
+<<<<<<< HEAD
         self.windows = []
         self.id = _id    
+=======
+        super().__init__(_id)
+        self._get_dofus_windows()
+        self._get_monitor_offset()
+        
+    def _get_dofus_windows(self):   
+        """
+        Gets the Dofus windows associated with this monitor.
+        
+        """
+>>>>>>> 6574c48e1f07046b8972089a85f04120ec10d577
         windows_snapshot = Quartz.CGWindowListCopyWindowInfo(Quartz.kCGWindowListOptionAll, Quartz.kCGNullWindowID)
         for i, window in enumerate(windows_snapshot) :
             my_window = Window(i, window['kCGWindowOwnerName'],window)
         self.windows.append(my_window)
     
     
+<<<<<<< HEAD
+=======
+    def _get_monitor_offset():
+        """
+        Gets monitor top left coordinates
+
+        """
+        pass
+>>>>>>> 6574c48e1f07046b8972089a85f04120ec10d577
     
     
 class MonitorWindows(Monitor):
@@ -235,8 +285,13 @@ class MonitorWindows(Monitor):
         super().__init__(_id)
         self._get_dofus_windows()
         self._get_monitor_offset
-        
+        self.width, self.height = self.windows[0].width, self.windows[0].height
+    
     def _get_dofus_windows(self):
+        """
+        Gets the Dofus windows associated with this monitor.
+        
+        """
         monitor_rect = pyautogui.locateOnScreen(self._id)
         _id = 0
         for window in pyautogui.getWindowsWithTitle('Dofus'):
@@ -247,6 +302,10 @@ class MonitorWindows(Monitor):
                 _id += 1
                 
     def _get_monitor_offset(self):
+        """
+        Gets monitor top left coordinates
+
+        """
         monitor_rect = pyautogui.getMonitors()[self._id]
         # Get the top-left corner of the monitor in pixel coordinates
         self.x_offset = monitor_rect.left 

@@ -8,7 +8,7 @@ class Action :
   def __init__(self) -> None:
     pass
 
-  def do(self)->bool :
+  def do(self)-> bool :
     pass
 
 
