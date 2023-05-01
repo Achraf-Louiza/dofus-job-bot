@@ -2,9 +2,10 @@ import numpy as np
 import pyautogui
 from monitor import Monitor
 from ocr import OCR
-import config
 import time
 import pandas as pd
+import sys, os
+sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
 
 class RecoltableScanner:
     """
@@ -92,6 +93,6 @@ class RecoltableScanner:
                         if recolt:
                             monitor.click_on_mouse()
                             time.sleep(3)
-        df = pd.DataFrame({'name': recoltable_names, 'x': x_coords, 'y': y_coords})
+        df = pd.DataFrame({'recoltable': recoltable_names, 'x': x_coords, 'y': y_coords})
         return df
         

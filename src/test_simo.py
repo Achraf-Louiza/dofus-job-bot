@@ -6,11 +6,12 @@ import psutil
 
 
 def main():
+  print('YES')
   MONITOR = MonitorMac(1)
   
-  DOFUS_WINS = MONITOR.init_dofus_windows()
-  for win in DOFUS_WINS :
-    print('[x] - IS VISIBLE',win.is_visible())
+  # DOFUS_WINS = MONITOR.init_dofus_windows()
+  # for win in DOFUS_WINS :
+  #   print('[x] - IS VISIBLE',win.is_visible())
 
   # win_number = DOFUS_WINS[0].window.get("kCGWindowNumber", 0)
   
@@ -30,10 +31,6 @@ def main():
 
   # focus_cmd_Return = subprocess.run(['osascript', '-e', 'tell application "System Events" to set frontmost of (every process whose unix id is '+dofus_wins_pids[1]+') to true'], check=True)
   # print(dofus_persos,focus_cmd_Return.returncode)
-
-  
-  
-
 
 
   # print("[x] - FOCUS SUCCES ON WINDOW",DOFUS_WINS[0].id) if MONITOR.focus_on_window(DOFUS_WINS[0].id) == True else print("[x] - FOCUS FAILED ON WINDOW",DOFUS_WINS[0].id)

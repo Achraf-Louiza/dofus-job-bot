@@ -1,9 +1,8 @@
 from PIL import Image
 import sys
-sys.path.append('../')
-import config
+import os
+sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
 import subprocess
-import pyautogui
 
 class Window :
     """ 
@@ -43,7 +42,7 @@ class WindowMac(Window) :
       
   
 class WindowWindows(Window) :
-  def __init__(self, _id: int, name: str, window: pyautogui.window):
+  def __init__(self, _id: int, name: str, window):
     super().__init__(_id, name, window)
     self.width = window.width
     self.height = window.height

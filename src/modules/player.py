@@ -9,7 +9,7 @@ class Player:
     A class representing a player controlling the champion in dofus
     
     """
-    def __init__(self, monitor_id: int = 0, n_accounts: int = 1) -> None:
+    def __init__(self):
         # Map & pixel coords
         self.map_x, self.map_y = None, None
         self.pixel_x, self.pixel_y = None, None
