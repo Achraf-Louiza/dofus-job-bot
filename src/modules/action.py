@@ -4,36 +4,35 @@
 
 
 class Action :
-    
-  def __init__(self) -> None:
-    pass
+ def __init__(self) -> None:
+  pass
 
-  def do(self)-> bool :
-    pass
+ def do(self)-> bool :
+  pass
 
 
 
 class MoveArrow(Action) : 
 
   def __init__(self, arrow: str)->None :
-    super()__init__()
-    self.arrow = arrow
+   super().__init__()
+   self.arrow = arrow
 
   def do(self)->bool :
-    print('[x] - MOVING WITH ARROW')
-    return False
+   print('[x] - MOVING WITH ARROW')
+   return False
 
 
 
 class MoveCoords(Action) : 
 
-  def __init__(self, x: int,y:int)->None :
-    super()__init__()
-    self.x = x
-    self.y = y
+ def __init__(self, x: int,y:int)->None :
+  super().__init__()
+  self.x = x
+  self.y = y
 
-  def do(self)->bool :
-    return False
+ def do(self)->bool :
+  return False
 
 
 
