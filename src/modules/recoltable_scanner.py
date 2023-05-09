@@ -89,10 +89,9 @@ class RecoltableScanner:
                         x_coords.append(x)
                         y_coords.append(y)
                         recoltable_names.append(name)
-                    if config.STR_RECOLTABLE_AVAILABLE in text or config.STR_RECOLTABLE_UNAVAILABLE not in text:
-                        if recolt:
-                            monitor.click_on_mouse()
-                            time.sleep(3)
-        df = pd.DataFrame({'recoltable': recoltable_names, 'x': x_coords, 'y': y_coords})
+                    if recolt and (config.STR_RECOLTABLE_AVAILABLE in text or config.STR_RECOLTABLE_UNAVAILABLE not in text):
+                        monitor.click_on_mouse()
+                        time.sleep(3)
+        df = pd.DataFrame({'recoltable': recoltable_names, 'pixel_x': x_coords, 'pixel_y': y_coords})
         return df
         

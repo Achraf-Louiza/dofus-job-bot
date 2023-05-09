@@ -204,7 +204,7 @@ class MonitorWindows(Monitor):
     def __init__(self, _id: int):
         super().__init__(_id)
         self._get_dofus_windows()
-        self._get_monitor_offset
+        self._get_monitor_offset()
         self.width, self.height = self.windows[0].width, self.windows[0].height
     
     def _get_dofus_windows(self):

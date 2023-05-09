@@ -14,6 +14,7 @@ class Character:
 
 
     def execute_action(self, action : Action) -> bool :
+        self.ui_handler.monitor.windows[self.id].maximize()
         return action.do()
     
     def execute_strategy(self, strategy: list) -> bool :

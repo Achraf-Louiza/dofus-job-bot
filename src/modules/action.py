@@ -38,23 +38,49 @@ class MoveTopMapPosition(Action):
             if dx==0:
                 return []
             elif dx > 0:
-                return config.RIGHT * monitor.width + monitor.x_offset
+                return config.RIGHT * monitor.width 
             else:
-                return config.LEFT * monitor.width + monitor.x_offset
+                return config.LEFT * monitor.width 
         else:
             if dy==0:
                 return []
             elif dy > 0:
-                return config.DOWN * monitor.height + monitor.y_offset
+                return config.DOWN * monitor.height 
             else:
-                return config.UP * monitor.height + monitor.y_offset
+                return config.UP * monitor.height 
     
     def do(self, ui_handler: UIHandler):
         direction = self._get_direction()
         self.ui_handler.click_on_pixel(direction[0], direction[1])
         
-        
+
 class Recolt(Action):
+    
+    def __init__(self, pixel_coords):
+        self.pixel_coord_x, self.pixel_coord_y = pixel_coords
+               
+    def do(self, ui_handler: UIHandler):
+        ui_handler.monitor.move_cursor(self.pixel_coord_x, self.pixel_coord_y)
+        time.sleep(0.5)
+        text_near_mouse = ui_handler.extract_text_near_cursor()
+        if config.STR_RECOLTABLE_AVAILABLE in text_near_mouse or config.STR_RECOLTABLE_UNAVAILABLE not in text_near_mouse:
+            ui_handler.monitor.click_on_mouse()
+
+class ScanMapPosition(Action):
+    
+    def __init__(self, map_pos, blueprint):
+        self.map_coord_x,  self.map_coord_y = map_pos
+        self.blueprint = blueprint
+
+    def do(self, ui_handler: UIHandler):
+        df = ui_handler.scan_map_recoltables(recolt=True)
+        df['pos_x'] = self.map_coord_x
+        df['pos_y'] = self.map_coord_y
+        res = pd.concat([self.blueprint, df], ignore_index=True)
+        res.to_csv(config.RECOLTABLE_MAP_BLUEPRINT_FILE_PATH, index=False)
+        return res
+                            
+class Recolt_all(Action):
     
     def __init__(self, recoltables:list, map_coord_x: int, map_coord_y: int):
         self.map_coord_x = map_coord_x
@@ -62,7 +88,7 @@ class Recolt(Action):
         self.recoltables = recoltables
         try:
             self.df = pd.read_csv(config.RECOLTABLE_PIXEL_COORDINATES_FILE_PATH([map_coord_x, map_coord_y]))
-            self.df = self.df[self.df['recoltable'].map(lambda x: x in recoltables)]
+            #self.df = self.df[self.df['recoltable'].map(lambda x: x in recoltables)]
         except:
             self.df = pd.DataFrame()
     
