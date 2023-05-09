@@ -2,7 +2,6 @@ from config import UP, DOWN, RIGHT, LEFT
 import config
 import pyautogui
 import numpy as np
-<<<<<<< HEAD
 import pandas as pd
 from character import Character
 from pathfinder import Pathfinder
@@ -11,9 +10,7 @@ from recoltableScanner import RecoltableScanner
 from monitor import MonitorWindows
 from ui_handler import UIHandler
 from action import Action, MoveTopMapPosition, ClickOnCoords, Recolt, ScanMapPosition
-=======
 from pathfinder import Pathfinder
->>>>>>> main
 
 class Player:
     """
@@ -21,7 +18,6 @@ class Player:
     
     """
     def __init__(self):
-<<<<<<< HEAD
         
         # Part 1: Init characters ----------------------------------------------
         # Init uihandlers
@@ -33,14 +29,14 @@ class Player:
         # Init global recoltables coordinates
         self.map_blueprint = self._read_recoltable_coords()
         # Init characters individual destinations
-        self.characters_destionations_coords = self._init_characters_destinations(map_blueprint)
-=======
+        self.characters_destionations_coords = self._init_characters_destinations(self.map_blueprint)
         pathfinder = Pathfinder()
         
+        # FINAL PART: Run global strategy
+        self.run_recolting_strategy()
         
->>>>>>> main
     
-    def run_global_strategy(self):
+    def run_recolting_strategy(self):
         chars_i_destinations = [0 for _ in range(len(self.characterObjs))]
         chars_i_next_pixel_recolt = [0 for _ in range(len(self.chracterObjs))]
         while not self._has_compelted():
