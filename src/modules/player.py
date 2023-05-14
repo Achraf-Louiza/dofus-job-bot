@@ -11,6 +11,7 @@ from monitor import MonitorWindows
 from ui_handler import UIHandler
 from action import Action, MoveTopMapPosition, ClickOnCoords, Recolt, ScanMapPosition
 from pathfinder import Pathfinder
+import screeninfo
 
 class Player:
     """
@@ -82,7 +83,7 @@ class Player:
         # Init Recoltable Scanner ----------------
         recoltableScannerObj = RecoltableScanner()
         # Init monitors --------------------------
-        monitors = pyautogui.getMonitors()
+        monitors = screeninfo.getMonitors()
         monitorObjs = [MonitorWindows(i) for i, monitor in enumerate(monitors)]
         # Init UIHandlers ------------------------
         uihandlers = [UIHandler(monitorObj, ocrObj, recoltableScannerObj) for monitorObj in monitorObjs]

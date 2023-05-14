@@ -1,12 +1,12 @@
-import Quartz
-from window import Window
+from window import WindowWindows
 import pyautogui
 import pandas
-import Quartz.CoreGraphics as CG
 from PIL import Image, ImageGrab
 import numpy as np
 import cv2 
 import os, sys
+import screeninfo
+import time
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
 
 class Monitor : 
@@ -172,31 +172,6 @@ class Monitor :
         except:
             black_box=np.array([[]])
         return black_box
-        
-
-class MonitorMac(Monitor):
-    
-    def __init__(self, _id: int):
-        super().__init__(_id)
-        self._get_dofus_windows()
-        self._get_monitor_offset()
-        
-    def _get_dofus_windows(self):   
-        """
-        Gets the Dofus windows associated with this monitor.
-        
-        """
-        windows_snapshot = Quartz.CGWindowListCopyWindowInfo(Quartz.kCGWindowListOptionAll, Quartz.kCGNullWindowID)
-        for i, window in enumerate(windows_snapshot) :
-            my_window = Window(i, window['kCGWindowOwnerName'],window)
-            self.windows.append(my_window)
-    
-    def _get_monitor_offset():
-        """
-        Gets monitor top left coordinates
-
-        """
-        pass
     
     
 class MonitorWindows(Monitor):
@@ -212,12 +187,16 @@ class MonitorWindows(Monitor):
         Gets the Dofus windows associated with this monitor.
         
         """
-        monitor_rect = pyautogui.locateOnScreen(self._id)
+        monitor = screeninfo.get_monitors()[self.id]
         _id = 0
         for window in pyautogui.getWindowsWithTitle('Dofus'):
-            if pyautogui.getWindowRect(window)[0] < monitor_rect[2] and pyautogui.getWindowRect(window)[1] < monitor_rect[3] and pyautogui.getWindowRect(window)[2] > monitor_rect[0] and pyautogui.getWindowRect(window)[3] > monitor_rect[1]:
+            window.maximize()
+            window.activate()
+            time.sleep(1)
+            box = window.box
+            if monitor.y < box.top+50 and monitor.x < box.left+50 and monitor.height > box.height-50 and monitor.width > box.width-50:
                 # Check if window intersects with monitor
-                my_window = Window(_id, window.title, window)
+                my_window = WindowWindows(_id, window.title, window)
                 self.windows.append(my_window)
                 _id += 1
                 
@@ -226,10 +205,10 @@ class MonitorWindows(Monitor):
         Gets monitor top left coordinates
 
         """
-        monitor_rect = pyautogui.getMonitors()[self._id]
+        monitor_rect = screeninfo.get_monitors()[self.id]
         # Get the top-left corner of the monitor in pixel coordinates
-        self.x_offset = monitor_rect.left 
-        self.y_offset = monitor_rect.top 
+        self.x_offset = monitor_rect.x 
+        self.y_offset = monitor_rect.y 
     
     def move_cursor(self, coord_x: int, coord_y: int):
         """
