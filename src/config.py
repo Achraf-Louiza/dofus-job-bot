@@ -42,16 +42,11 @@ P_MAP_RIGHT = 0.05
 P_MAP_BOTTOM = 0.1
 
 # Near current pixel coordiantes -----------------------------------------------------------------
-# Offset from current pixel coordinates
-P_OFFSET_HEIGHT = 0
-P_OFFSET_WIDTH = 0
-OFFSET_WIDTH = lambda width: width * P_OFFSET_WIDTH
-OFFSET_HEIGHT = lambda height: height * P_OFFSET_HEIGHT
 # Percentage for box edges
-P_MOUSE_LEFT = 0
-P_MOUSE_TOP = 0
-P_MOUSE_RIGHT = 0
-P_MOUSE_BOTTOM = 0
+P_MOUSE_LEFT = 0.02
+P_MOUSE_TOP = - 0.1
+P_MOUSE_RIGHT = 0.15
+P_MOUSE_BOTTOM = 0.02
 # Box minimal (width, height) 
 P_MOUSE_MIN_HEIGHT = 0
 P_MOUSE_MAX_HEIGHT = 0 
@@ -67,5 +62,5 @@ P_SCAN_X_SKIP = 0
 P_SCAN_Y_SKIP = 0
 
 # Test variables
-image_coords_path = '../../data/images/coordinates_test.png'
-
+image_coords_path = '../data/images/coordinates_test.png'
+image_near_cursor = '../data/images/near_cursor_test.png'

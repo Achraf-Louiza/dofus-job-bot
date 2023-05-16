@@ -1,4 +1,4 @@
-from window import WindowWindows
+from .window import WindowWindows
 import pyautogui
 import pandas
 from PIL import Image, ImageGrab
@@ -95,10 +95,12 @@ class Monitor :
             Screenshot of the black box near cursor position or empty image array([[]]) if none are detected
     
         """
-        screenshot = self.get_box(config.P_MOUSE_LEFT, 
-                                  config.P_MOUSE_TOP, 
-                                  config.P_MOUSE_RIGHT, 
-                                  config.P_MOUSE_BOTTOM)
+        pos = pyautogui.position()
+        pos = [pos[0]/self.width, pos[1]/self.height]
+        screenshot = self.get_box(config.P_MOUSE_LEFT + pos[0], 
+                                  config.P_MOUSE_TOP + pos[1], 
+                                  config.P_MOUSE_RIGHT + pos[0], 
+                                  config.P_MOUSE_BOTTOM + pos[1])
         screenshot_black_box = self._extract_black_box(screenshot)
         return screenshot_black_box
     
