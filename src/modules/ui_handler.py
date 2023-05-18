@@ -1,7 +1,8 @@
-from monitor import Monitor
-from ocr import OCR
-from recoltable_scanner import RecoltableScanner
+from .monitor import Monitor
+from .ocr import OCR
+from .recoltable_scanner import RecoltableScanner
 import sys, os
+from unidecode import unidecode
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
 
 class UIHandler:
@@ -16,7 +17,7 @@ class UIHandler:
     
     def click_on_pixel(self, coord_x: int, coord_y: int):
         self.monitor.move_cursor(coord_x, coord_y)
-        self.monitor.click_on_mouse(coord_x, coord_y)
+        self.monitor.click_on_mouse()
     
     def extract_current_map_position(self) -> list:
         """
@@ -28,7 +29,7 @@ class UIHandler:
             Text containing current map position    
         """
         screenshot = self.monitor.get_box_map_position()
-        text = self.recognize_text(screenshot, config.COORDINATES_CHARS)
+        text = self.ocr.recognize_text(screenshot, config.COORDINATES_CHARS)
         coords = self.parse_map_position(text)
         return coords
     
@@ -44,6 +45,8 @@ class UIHandler:
         """
         screenshot = self.monitor.get_box_near_cursor_position()
         text = self.recognize_text(screenshot, config.ALPHABET_CHARS)
+        # Remove (accents)
+        text = unidecode(text.lower())
         return text
     
     def scan_map_recoltables(self, recolt: bool = True):

@@ -1,10 +1,11 @@
 import numpy as np
 import pyautogui
-from monitor import Monitor
-from ocr import OCR
+from .monitor import Monitor
+from .ocr import OCR
 import time
 import pandas as pd
 import sys, os
+from unidecode import unidecode
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
 
 class RecoltableScanner:
@@ -39,13 +40,13 @@ class RecoltableScanner:
             
         """
         # Define the x and y ranges
-        x = range(config.P_GROUND_LEFT * monitor.width + monitor.x_offset, 
-                  config.P_GROUND_RIGHT * monitor.width + monitor.x_offset, 
-                  config.P_SCAN_X_SKIP)
+        x = range(int((config.P_GROUND_LEFT+0.04) * monitor.width + monitor.x_offset), 
+                  int(config.P_GROUND_RIGHT * monitor.width + monitor.x_offset), 
+                  int(config.P_SCAN_X_SKIP*monitor.width))
         
-        y = range(config.P_GROUND_TOP * monitor.height + monitor.y_offset, 
-                  config.P_GROUND_BOTTOM * monitor.height + monitor.y_offset, 
-                  config.P_SCAN_Y_SKIP)
+        y = range(int((config.P_GROUND_TOP+0.04) * monitor.height + monitor.y_offset), 
+                  int((config.P_GROUND_BOTTOM-0.025) * monitor.height + monitor.y_offset), 
+                  int(config.P_SCAN_Y_SKIP*monitor.height))
         
         # Create the grid using meshgrid
         self.X, self.Y = np.meshgrid(x, y)
@@ -79,19 +80,33 @@ class RecoltableScanner:
                 b = (j if i%2==0 else len(self.X[0])- j - 1) 
                 x, y = self.X[a, b], self.Y[a, b]
                 monitor.move_cursor(x, y)
-                time.sleep(0.3)
+                time.sleep(0.25)
                 black_box = monitor.get_box_near_cursor_position()
-                text = ocr.recognize_text(black_box, config.ALPHABET_CHARS)
-                if type(black_box) != np.ndarray:
-                    black_box.close()
+                if black_box.shape[0]<40 or black_box.shape[1]<10:
+                    text = ''
+                else:
+                    text = ocr.recognize_text(black_box, config.ALPHABET_CHARS)
+                    text = unidecode(text.lower())
+                    print('-------------------------------------------')
+                    print(text)
                 for name in config.RECOLTABLE_NAMES:
+                    # Clean text
                     if name in text:
                         x_coords.append(x)
                         y_coords.append(y)
-                        recoltable_names.append(name)
-                    if recolt and (config.STR_RECOLTABLE_AVAILABLE in text or config.STR_RECOLTABLE_UNAVAILABLE not in text):
-                        monitor.click_on_mouse()
-                        time.sleep(3)
+                        recoltable_names.append(config.mapToRecoltable[name])
+                        print(name, x, y)
+                        if recolt and (config.STR_RECOLTABLE_AVAILABLE in text and config.STR_RECOLTABLE_UNAVAILABLE not in text):
+                            print(f'HERE {recolt}')
+                            if name =='ble' or name == 'bl\n':
+                                monitor.click_on_mouse()
+                                time.sleep(2)
+            if type(black_box) != np.ndarray:
+                black_box.close()
         df = pd.DataFrame({'recoltable': recoltable_names, 'pixel_x': x_coords, 'pixel_y': y_coords})
+        origin = pd.read_csv(config.RECOLTABLE_PIXEL_COORDINATES)
+        df = pd.concat([origin, df], ignore_index=True)
+        df = df.drop_duplicates()
+        df.to_csv(config.RECOLTABLE_PIXEL_COORDINATES, index=False)
         return df
         

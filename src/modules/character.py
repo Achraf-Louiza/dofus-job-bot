@@ -1,5 +1,5 @@
-from action import Action
-from ui_handler import UIHandler
+from .action import Action
+from .ui_handler import UIHandler
 import numpy as np
 
 class Character:
@@ -10,7 +10,7 @@ class Character:
         self.level = level
         self.is_subscribed = is_subscribed
         self.ui_handler = ui_handler
-        self.map_coords = ui_handler.extract_current_map_position(_id)
+        self.map_coords = self.read_current_position()
 
 
     def execute_action(self, action : Action) -> bool :
@@ -20,8 +20,8 @@ class Character:
     def execute_strategy(self, strategy: list) -> bool :
         c = 0
         executed = True
-        while (c<len(strategy) and executed ):
-            executed = self.execute_action(strategy[c])!=False
+        while (c<len(strategy) and executed):
+            executed = self.execute_action(strategy[c])
             c+=1
         return executed 
         

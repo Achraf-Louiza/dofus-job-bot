@@ -175,7 +175,6 @@ class Monitor :
             black_box=np.array([[]])
         return black_box
     
-    
 class MonitorWindows(Monitor):
     
     def __init__(self, _id: int):
@@ -228,4 +227,4 @@ class MonitorWindows(Monitor):
         """
         Simulates a left-click on the mouse at the current cursor position.
         """
-        pyautogui.click(button='left')
+        pyautogui.click(button='left')   
