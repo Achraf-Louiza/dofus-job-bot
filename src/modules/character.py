@@ -14,8 +14,7 @@ class Character:
 
 
     def execute_action(self, action : Action) -> bool :
-        self.ui_handler.monitor.windows[self.id].maximize()
-        return action.do()
+        return action.do(self.ui_handler)
     
     def execute_strategy(self, strategy: list) -> bool :
         c = 0
@@ -25,14 +24,16 @@ class Character:
             c+=1
         return executed 
         
-    def has_moved(self, new_map_coords: list):
-        return self.map_coords[0] != new_map_coords[0] or self.map_coords[1] != new_map_coords[1]
+    def has_moved(self):
+        new_map_coords = self.read_current_position()
+        return (self.map_coords[0] != new_map_coords[0] or self.map_coords[1] != new_map_coords[1])
     
-    def update_map_coords(self, new_map_coords: list):
+    def update_map_coords(self):
+        new_map_coords = self.ui_handler.extract_current_map_position()
         self.map_coords = new_map_coords
 
     def has_arrived(self, pos_x: int, pos_y: int) -> bool:
         return self.map_coords[0]==pos_x and self.map_coords[1]==pos_y
         
     def read_current_position(self):
-        return self.ui_handler.extract_current_map_position(self.id)
+        return self.ui_handler.extract_current_map_position()

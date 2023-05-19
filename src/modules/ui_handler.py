@@ -44,14 +44,14 @@ class UIHandler:
         
         """
         screenshot = self.monitor.get_box_near_cursor_position()
-        text = self.recognize_text(screenshot, config.ALPHABET_CHARS)
+        text = self.ocr.recognize_text(screenshot, config.ALPHABET_CHARS)
         # Remove (accents)
         text = unidecode(text.lower())
         return text
     
-    def scan_map_recoltables(self, recolt: bool = True):
+    def scan_map_recoltables(self, map_pos: list, recolt: bool = True):
         self.scanner.init_grid_search(self.monitor)
-        df = self.scanner.scan_grid(self.monitor, self.ocr, recolt=recolt)
+        df = self.scanner.scan_grid(map_pos, self.monitor, self.ocr, recolt=recolt)
         return df
     
     def parse_map_position(self, text: str) -> list:
@@ -73,7 +73,7 @@ class UIHandler:
         for i, char in enumerate(text):
             if i!=0 and char=='-':
                 if text[i-1] != ',':
-                    text = text[:i-1] + ',' + text[i:]
+                    text = text[:i] + ',' + text[i:]
         # Get rid of all what comes after a second comma
         if len(text.split(','))>2:
             text = ','.join(text.split(',')[:2])

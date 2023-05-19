@@ -1,6 +1,7 @@
 from PIL import Image
 import sys
 import os
+import pyautogui
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
 import subprocess
 
@@ -27,7 +28,11 @@ class WindowWindows(Window) :
     self.height = window.height
 
   def focus(self) -> bool :
-    return self.window.activate()
-  
+      try:
+          self.window.activate()
+      except:
+          self.window.minimize()
+          self.window.maximize()
+          
   def maximize(self) -> bool :
     return self.window.maximize()

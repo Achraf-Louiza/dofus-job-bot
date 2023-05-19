@@ -15,7 +15,6 @@ from pathlib import Path
 
 class TestUIHandler(unittest.TestCase):
     def __init__(self):
-        pytesseract.pytesseract.tesseract_cmd = 'C://Program Files/Tesseract-OCR/tesseract.exe' 
         self.monitor = MonitorWindows(0)
         self.ocr = OCR()
         self.recoltable_scanner = RecoltableScanner()
@@ -24,6 +23,7 @@ class TestUIHandler(unittest.TestCase):
     def test_monitor_window_reading(self):
         character_name = 'The-blood-omni'
         dofus_window_title = self.monitor.windows[0].window.title
+        self.monitor.windows[0].focus()
         assert character_name in dofus_window_title, f"Character {character_name} wasn't found in the first window!"
         print('TEST DOFUS WINDOW DETECTION OK!')
     
@@ -37,8 +37,10 @@ class TestUIHandler(unittest.TestCase):
     
     def test_screenshot_near_cursor_img(self):
         time.sleep(1)
-        seigle_x = 0.4 * self.monitor.width
-        seigle_y = 0.35 * self.monitor.height
+        """seigle_x = 0.4 * self.monitor.width
+        seigle_y = 0.35 * self.monitor.height"""
+        seigle_x = 0.6 * self.monitor.width
+        seigle_y = 0.7 * self.monitor.height
         self.monitor.move_cursor(seigle_x, seigle_y)
         time.sleep(0.5)
         screenshot = self.monitor.get_box_near_cursor_position()

@@ -1,7 +1,7 @@
 from .window import WindowWindows
 import pyautogui
 import pandas
-from PIL import Image, ImageGrab
+from PIL import Image, ImageGrab, ImageFilter, ImageDraw
 import numpy as np
 import cv2 
 import os, sys
@@ -102,7 +102,9 @@ class Monitor :
                                   config.P_MOUSE_RIGHT + pos[0], 
                                   config.P_MOUSE_BOTTOM + pos[1])
         screenshot_black_box = self._extract_black_box(screenshot)
-        return screenshot_black_box
+        np_array = np.array(screenshot_black_box)
+        inverted_array = 255 - np_array
+        return inverted_array
     
       
     def get_box_map_position(self) -> Image:
@@ -119,8 +121,19 @@ class Monitor :
                                   config.P_MAP_TOP, 
                                   config.P_MAP_RIGHT, 
                                   config.P_MAP_BOTTOM)
-        return screenshot
+        #invert colors
+        np_array = np.array(screenshot)
+        inverted_array = 255 - np_array
+        # Convert RGB image to grayscale
+        gray_image = cv2.cvtColor(inverted_array, cv2.COLOR_RGB2GRAY)
+        # Enhance the image
+        enhanced = cv2.equalizeHist(gray_image)
+        # Create a PIL image from the RGB array
+        result_image = Image.fromarray(enhanced)
+        return result_image
     
+    
+
     def get_clickable_game_zone(self) -> Image:
         """
         Gets a screenshot of the usable ground in the game [box relative coordiantes are in config.py]
@@ -191,9 +204,6 @@ class MonitorWindows(Monitor):
         monitor = screeninfo.get_monitors()[self.id]
         _id = 0
         for window in pyautogui.getWindowsWithTitle('Dofus'):
-            window.maximize()
-            window.activate()
-            time.sleep(1)
             box = window.box
             if monitor.y < box.top+50 and monitor.x < box.left+50 and monitor.height > box.height-50 and monitor.width > box.width-50:
                 # Check if window intersects with monitor
@@ -228,3 +238,4 @@ class MonitorWindows(Monitor):
         Simulates a left-click on the mouse at the current cursor position.
         """
         pyautogui.click(button='left')   
+

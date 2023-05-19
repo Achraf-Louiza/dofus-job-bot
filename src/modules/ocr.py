@@ -9,7 +9,7 @@ class OCR:
     
     """
     def __init__(self):
-        pass       
+        pytesseract.pytesseract.tesseract_cmd = 'C://Program Files/Tesseract-OCR/tesseract.exe'      
         
     def recognize_text(self, image: Image, recognizable_chars: str) -> str:
         """
@@ -30,5 +30,6 @@ class OCR:
         """
         config = PYTESSERACT_CONFIG_FUNC(recognizable_chars)
         text = pytesseract.image_to_string(image, config=config)
+        print(text)
         return text
     

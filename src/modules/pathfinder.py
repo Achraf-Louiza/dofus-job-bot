@@ -25,7 +25,7 @@ class Pathfinder:
             nearest_index = -1
             for j in range(len(coords)):
                 if not visited[j]:
-                    dist = self.manhattan_dist(coords[current], coords[j])
+                    dist = self.manhattan_distance(coords[current], coords[j])
                     if dist < nearest_dist:
                         nearest_dist = dist
                         nearest_index = j
@@ -33,7 +33,8 @@ class Pathfinder:
             path_by_index[i] = nearest_index
             current = nearest_index
         self.path = [coords[i] for i in path_by_index]
-        return self.path      
+        return self.path[1:]
+     
     
     def _init_grid(self): 
         try:

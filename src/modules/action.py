@@ -1,6 +1,6 @@
-from ui_handler import UIHandler
+from .ui_handler import UIHandler
 import pandas as pd
-from time import time
+import time
 import sys, os
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
 
@@ -24,61 +24,68 @@ class ClickOnCoords(Action) :
         return ui_handler.click_on_pixel(self.coord_x, self.coord_y)
     
     
-class MoveTopMapPosition(Action):
+class MoveToMapPosition(Action):
     
     def __init__(self, start: list, destination: list):
         self.start = start
         self.destination = destination
     
-    def _get_direction(self) -> list:
-        dx, dy = self.destination[0] - self.start[0], self.destionation[1] - self.start[1]
+    def _get_direction(self, ui_handler) -> list:
+        dx, dy = self.destination[0] - self.start[0], self.destination[1] - self.start[1]
         direction = [abs(dx), abs(dy)].index(max(abs(dx), abs(dy)))
-        monitor = self.ui_handler.monitor
+        monitor = ui_handler.monitor
         if direction==0:
             if dx==0:
                 return []
             elif dx > 0:
-                return config.RIGHT * monitor.width 
+                return (config.RIGHT[0] * monitor.width, config.RIGHT[1]*monitor.height)
             else:
-                return config.LEFT * monitor.width 
+                return (config.LEFT[0] * monitor.width, config.LEFT[1]*monitor.height)
         else:
             if dy==0:
                 return []
             elif dy > 0:
-                return config.DOWN * monitor.height 
+                return (config.DOWN[0] * monitor.width, config.DOWN[1]*monitor.height) 
             else:
-                return config.UP * monitor.height 
+                return (config.UP[0] * monitor.width, config.UP[1]*monitor.height) 
     
     def do(self, ui_handler: UIHandler):
-        direction = self._get_direction()
-        self.ui_handler.click_on_pixel(direction[0], direction[1])
+        direction = self._get_direction(ui_handler)
+        ui_handler.click_on_pixel(direction[0], direction[1])
         
 
 class Recolt(Action):
     
-    def __init__(self, pixel_coords):
+    def __init__(self, character_name, pixel_coords):
         self.pixel_coord_x, self.pixel_coord_y = pixel_coords
+        self.character_name = character_name
+  
                
     def do(self, ui_handler: UIHandler):
         ui_handler.monitor.move_cursor(self.pixel_coord_x, self.pixel_coord_y)
         time.sleep(0.5)
-        text_near_mouse = ui_handler.extract_text_near_cursor()
-        if config.STR_RECOLTABLE_AVAILABLE in text_near_mouse or config.STR_RECOLTABLE_UNAVAILABLE not in text_near_mouse:
-            ui_handler.monitor.click_on_mouse()
+        try:
+            text_near_mouse = ui_handler.extract_text_near_cursor()
+            recoltables = config.recoltablesPerChar[self.character_name]
+            for recoltable in recoltables:
+                if recoltable in text_near_mouse:
+                    if (config.STR_RECOLTABLE_AVAILABLE in text_near_mouse or config.STR_RECOLTABLE_UNAVAILABLE not in text_near_mouse):
+                        ui_handler.monitor.click_on_mouse()
+                        return 1
+        except:
+            print(f'Error extracting text near cusor {self.pixel_coord_x}, {self.pixel_coord_y}')
+        
+        return 0
 
 class ScanMapPosition(Action):
     
     def __init__(self, map_pos, blueprint):
+        self.map_pos = map_pos
         self.map_coord_x,  self.map_coord_y = map_pos
         self.blueprint = blueprint
 
     def do(self, ui_handler: UIHandler):
-        df = ui_handler.scan_map_recoltables(recolt=True)
-        df['pos_x'] = self.map_coord_x
-        df['pos_y'] = self.map_coord_y
-        res = pd.concat([self.blueprint, df], ignore_index=True)
-        res.to_csv(config.RECOLTABLE_MAP_BLUEPRINT_FILE_PATH, index=False)
-        return res
+        ui_handler.scan_map_recoltables(self.map_pos, recolt=True)
                             
 class Recolt_all(Action):
     

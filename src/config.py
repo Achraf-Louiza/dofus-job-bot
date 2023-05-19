@@ -20,29 +20,32 @@ WHEAT_API_ID = 289
 NMAX_RESPONSES = 91
 
 # Recoltables
-RECOLTABLE_NAMES = ['ble', 'bl\n', 'avoine', 'houblon', 'seigle']
-mapToRecoltable = {'ble': 'wheat', 'bl\n': 'wheat', 'avoine': 'avoine', 'houblon': 'houblon', 'seigle': 'seigle'}
+RECOLTABLE_NAMES = ['ble', 'bl\n', 'avoine', 'houblon', 'seigle', 'lin', 'orge']
+mapToRecoltable = {'ble': 'wheat', 'bl\n': 'wheat', 'avoine': 'avoine', 'houblon': 'houblon', 'seigle': 'seigle', 'lin':'lin', 'orge': 'orge'}
 STR_RECOLTABLE_AVAILABLE = 'fauch'
 STR_RECOLTABLE_UNAVAILABLE = 'puis'
 
 # Recoltable pixel coordinates 
-RECOLTABLE_PIXEL_COORDINATES = "../../data/recoltable_pixel_coordinates/recoltable_pixel_coords.csv"
+RECOLTABLE_PIXEL_COORDINATES = "../data/recoltable_pixel_coordinates/recoltable_pixel_coords.csv"
 
 # OCR list of characters to detect------------------------------------------------------------------------------------
 ALPHABET_CHARS = string.ascii_lowercase + string.ascii_uppercase + 'éèê'
-COORDINATES_CHARS = '0123456789,-N'
+COORDINATES_CHARS = '0123456789,-'
 
+recoltablesPerChar = {'The-blood-omni': ['orge', 'wheat', 'ble', 'bie', 'bl\n'],
+                      'Guelaa-tiempo': ['orge', 'wheat', 'houblon', 'seigle', 'avoine', 'lin', 'ble', 'bie', 'bl\n']
+                     }
 
 # Move from map position to another : You can only move RIGHT, LEFT, UP, DOWN.--------------------
 RIGHT = (0.84, 0.5)
-LEFT = (0.15, 0.5)
-DOWN = (0.5, 0.86)
-UP = (0.5, 0.03)
+LEFT = (0.15, 0.7)
+DOWN = (0.4, 0.86)
+UP = (0.7, 0.03)
 
 # Map position (width or height) percentage for box edges ----------------------------------------
-P_MAP_LEFT = 0.008
-P_MAP_TOP = 0.06
-P_MAP_RIGHT = 0.05
+P_MAP_LEFT = 0.006
+P_MAP_TOP = 0.065
+P_MAP_RIGHT = 0.06
 P_MAP_BOTTOM = 0.1
 
 # Near current pixel coordiantes -----------------------------------------------------------------
@@ -62,8 +65,8 @@ P_GROUND_TOP = 0.03
 P_GROUND_RIGHT = 0.83
 P_GROUND_BOTTOM =0.85
 # Scanner percentage of inbetween edge size in the grid search
-P_SCAN_X_SKIP = 0.047
-P_SCAN_Y_SKIP = 0.042
+P_SCAN_X_SKIP = 0.035
+P_SCAN_Y_SKIP = 0.035
 
 # Test variables
 image_coords_path = '../../data/images/coordinates_test.png'

@@ -40,8 +40,8 @@ class RecoltableScanner:
             
         """
         # Define the x and y ranges
-        x = range(int((config.P_GROUND_LEFT+0.04) * monitor.width + monitor.x_offset), 
-                  int(config.P_GROUND_RIGHT * monitor.width + monitor.x_offset), 
+        x = range(int((config.P_GROUND_LEFT+0.01) * monitor.width + monitor.x_offset), 
+                  int((config.P_GROUND_RIGHT+0.01) * monitor.width + monitor.x_offset), 
                   int(config.P_SCAN_X_SKIP*monitor.width))
         
         y = range(int((config.P_GROUND_TOP+0.04) * monitor.height + monitor.y_offset), 
@@ -52,7 +52,7 @@ class RecoltableScanner:
         self.X, self.Y = np.meshgrid(x, y)
         
     
-    def scan_grid(self, monitor: Monitor, ocr: OCR, recolt: bool) -> pd.DataFrame:
+    def scan_grid(self, map_pos: list, monitor: Monitor, ocr: OCR, recolt: bool) -> pd.DataFrame:
         """
         Scans the grid for specific text patterns using OCR and returns a DataFrame
         with the coordinates and names of the matching items.
@@ -80,7 +80,7 @@ class RecoltableScanner:
                 b = (j if i%2==0 else len(self.X[0])- j - 1) 
                 x, y = self.X[a, b], self.Y[a, b]
                 monitor.move_cursor(x, y)
-                time.sleep(0.25)
+                time.sleep(0.35)
                 black_box = monitor.get_box_near_cursor_position()
                 if black_box.shape[0]<40 or black_box.shape[1]<10:
                     text = ''
@@ -98,13 +98,17 @@ class RecoltableScanner:
                         print(name, x, y)
                         if recolt and (config.STR_RECOLTABLE_AVAILABLE in text and config.STR_RECOLTABLE_UNAVAILABLE not in text):
                             print(f'HERE {recolt}')
-                            if name =='ble' or name == 'bl\n':
+                            if name =='ble' or name == 'bl\n' or name=='orge' or name=='seigle':
                                 monitor.click_on_mouse()
                                 time.sleep(2)
             if type(black_box) != np.ndarray:
                 black_box.close()
-        df = pd.DataFrame({'recoltable': recoltable_names, 'pixel_x': x_coords, 'pixel_y': y_coords})
-        origin = pd.read_csv(config.RECOLTABLE_PIXEL_COORDINATES)
+            
+        df = pd.DataFrame({'recoltable': recoltable_names, 'x': [map_pos[0]]*len(x_coords), 'y': [map_pos[1]]*len(x_coords), 'pixel_x': x_coords, 'pixel_y': y_coords})
+        try:
+            origin = pd.read_csv(config.RECOLTABLE_PIXEL_COORDINATES)
+        except:
+            origin = pd.DataFrame()
         df = pd.concat([origin, df], ignore_index=True)
         df = df.drop_duplicates()
         df.to_csv(config.RECOLTABLE_PIXEL_COORDINATES, index=False)
