@@ -36,7 +36,8 @@ ALPHABET_CHARS = string.ascii_lowercase + string.ascii_uppercase + 'éèê'
 COORDINATES_CHARS = '0123456789,-'
 
 recoltablesPerChar = {'The-blood-omni': ['orge', 'wheat', 'ble', 'bie', 'bl\n'],
-                      'Guelaa-tiempo': RECOLTABLE_NAMES
+                      'Guelaa-tiempo': RECOLTABLE_NAMES,
+                      'Chef-rox': ['wheat', 'ble', 'bie', 'bl\n']
                      }
 
 # Move from map position to another : You can only move RIGHT, LEFT, UP, DOWN.--------------------
@@ -48,7 +49,7 @@ UP = (0.7, 0.03)
 # Map position (width or height) percentage for box edges ----------------------------------------
 P_MAP_LEFT = 0.006
 P_MAP_TOP = 0.065
-P_MAP_RIGHT = 0.06
+P_MAP_RIGHT = 0.065
 P_MAP_BOTTOM = 0.1
 
 # Near current pixel coordiantes -----------------------------------------------------------------

@@ -36,7 +36,7 @@ class Player:
         try:
             self.pixel_coords = pd.read_csv(config.RECOLTABLE_PIXEL_COORDINATES)
             # Temporary
-            self.char_pixel_coords =[self.pixel_coords, self.pixel_coords]
+            self.char_pixel_coords =[self.pixel_coords for _ in range(len(self.characterObjs))]
             if len(self.pixel_coords)!=0:        
                 for i, char in enumerate(self.characterObjs):
                     self.char_pixel_coords[i] = self.pixel_coords[self.pixel_coords.recoltable.map(lambda x: x in config.recoltablesPerChar[char.name])]
@@ -44,7 +44,7 @@ class Player:
                     self.char_pixel_coords[i]['pixel_y'] = self.char_pixel_coords[i]['pixel_y'].map(lambda x: round(x*uihandlers[0].monitor.height))
         except:
             self.pixel_coords = pd.DataFrame(columns=['recoltable', 'x', 'y', 'pixel_x', 'pixel_y'])
-            self.char_pixel_coords =[self.pixel_coords, self.pixel_coords]
+            self.char_pixel_coords =[self.pixel_coords for _ in range(len(self.characterObjs))]
 
         # FINAL PART: Run global strategy
         self.run_recolting_strategy()
@@ -75,7 +75,7 @@ class Player:
                     else:
                         print('Wainting for last movement to complete')
                         n_wait+=1
-                        if n_wait == 20//len(self.characterObjs):
+                        if n_wait == 8//len(self.characterObjs):
                             move_action = MoveToMapPosition(character.map_coords, next_destination)
                             character.execute_action(move_action)
                             n_wait = 0
@@ -133,7 +133,7 @@ class Player:
                         character.execute_action(scan_action)
                         last_action[i]='scan'
                         chars_i_destinations[i] += 1
-                time.sleep(1)
+                    time.sleep(1)
         
         
     def _has_completed(self):
@@ -165,6 +165,7 @@ class Player:
             for window in windows:
                 character_name = '-'.join(window.name.split('-')[:-1]).strip()
                 window.focus()
+                time.sleep(0.5)
                 character = Character(window.id, character_name, 100, True, uihandler)
                 characterObjs.append(character)
         return characterObjs
