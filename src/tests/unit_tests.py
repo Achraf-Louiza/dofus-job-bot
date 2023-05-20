@@ -8,7 +8,9 @@ def main():
     uihandler_testor.test_screenshot_near_cursor_img()
     uihandler_testor.test_ocr()"""
     #uihandler_testor.test_scan_map_recoltables()
-    uihandler_testor.test_basic_movement_coords()
+    #uihandler_testor.test_basic_movement_coords()
+    uihandler_testor.test_screenshot_near_cursor_img()
+    uihandler_testor.test_ocr()
     
 
 # Run main

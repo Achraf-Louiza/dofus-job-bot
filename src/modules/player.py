@@ -40,6 +40,8 @@ class Player:
             if len(self.pixel_coords)!=0:        
                 for i, char in enumerate(self.characterObjs):
                     self.char_pixel_coords[i] = self.pixel_coords[self.pixel_coords.recoltable.map(lambda x: x in config.recoltablesPerChar[char.name])]
+                    self.char_pixel_coords[i]['pixel_x'] = self.char_pixel_coords[i]['pixel_x'].map(lambda x: round(x*uihandlers[0].monitor.width))
+                    self.char_pixel_coords[i]['pixel_y'] = self.char_pixel_coords[i]['pixel_y'].map(lambda x: round(x*uihandlers[0].monitor.height))
         except:
             self.pixel_coords = pd.DataFrame(columns=['recoltable', 'x', 'y', 'pixel_x', 'pixel_y'])
             self.char_pixel_coords =[self.pixel_coords, self.pixel_coords]
@@ -113,7 +115,7 @@ class Player:
                             print(f'- Trying to recolt: {next_pixel_recolt}')
                             chars_i_next_pixel_recolt[i] += 1
                             next_pixel_recolt = self.myPC[['pixel_x', 'pixel_y']].values[chars_i_next_pixel_recolt[i]]
-                            time.sleep(0.3)
+                            
                             
                         last_action[i]='recolt'
                         if chars_i_next_pixel_recolt[i] == len(self.myPC)-1:

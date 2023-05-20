@@ -105,6 +105,8 @@ class RecoltableScanner:
                 black_box.close()
             
         df = pd.DataFrame({'recoltable': recoltable_names, 'x': [map_pos[0]]*len(x_coords), 'y': [map_pos[1]]*len(x_coords), 'pixel_x': x_coords, 'pixel_y': y_coords})
+        df['pixel_x'] = df['pixel_x'].map(lambda x: round(x/monitor.width, 3))
+        df['pixel_y'] = df['pixel_y'].map(lambda x: round(x/monitor.height, 3))
         try:
             origin = pd.read_csv(config.RECOLTABLE_PIXEL_COORDINATES)
         except:

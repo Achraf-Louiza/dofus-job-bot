@@ -20,8 +20,11 @@ WHEAT_API_ID = 289
 NMAX_RESPONSES = 91
 
 # Recoltables
-RECOLTABLE_NAMES = ['ble', 'bl\n', 'avoine', 'houblon', 'seigle', 'lin', 'orge']
-mapToRecoltable = {'ble': 'wheat', 'bl\n': 'wheat', 'avoine': 'avoine', 'houblon': 'houblon', 'seigle': 'seigle', 'lin':'lin', 'orge': 'orge'}
+RECOLTABLE_NAMES = ['ble', 'bie', 'bl\n', 'wheat',  'avoine', 'houblon', 'seigle', 'lin', 'orge', 'riz', 'malt', 'chanvre', 'maïs', 'millet']
+mapToRecoltable = {x:x for x in RECOLTABLE_NAMES}
+mapToRecoltable['ble'] = 'wheat'
+mapToRecoltable['bl\n'] ='wheat'
+mapToRecoltable['bie'] = 'wheat'
 STR_RECOLTABLE_AVAILABLE = 'fauch'
 STR_RECOLTABLE_UNAVAILABLE = 'puis'
 
@@ -33,7 +36,7 @@ ALPHABET_CHARS = string.ascii_lowercase + string.ascii_uppercase + 'éèê'
 COORDINATES_CHARS = '0123456789,-'
 
 recoltablesPerChar = {'The-blood-omni': ['orge', 'wheat', 'ble', 'bie', 'bl\n'],
-                      'Guelaa-tiempo': ['orge', 'wheat', 'houblon', 'seigle', 'avoine', 'lin', 'ble', 'bie', 'bl\n']
+                      'Guelaa-tiempo': RECOLTABLE_NAMES
                      }
 
 # Move from map position to another : You can only move RIGHT, LEFT, UP, DOWN.--------------------
@@ -50,9 +53,9 @@ P_MAP_BOTTOM = 0.1
 
 # Near current pixel coordiantes -----------------------------------------------------------------
 # Percentage for box edges
-P_MOUSE_LEFT = 0.02
-P_MOUSE_TOP = - 0.1
-P_MOUSE_RIGHT = 0.15
+P_MOUSE_LEFT = 0.005
+P_MOUSE_TOP = - 0.11
+P_MOUSE_RIGHT = 0.115
 P_MOUSE_BOTTOM = 0.02
 # Box minimal (width, height)  / Unused currently
 P_MOUSE_MIN_HEIGHT = 0

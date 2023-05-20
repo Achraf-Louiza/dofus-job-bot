@@ -149,8 +149,8 @@ class Monitor :
                                   config.P_GROUND_RIGHT, 
                                   config.P_GROUND_BOTTOM)
         return screenshot
-    
-    def _extract_black_box(self, image: Image) -> Image:
+
+    def _extract_black_box(self, image):
         """
         Exctracts the most prominent black box in the image
 
@@ -165,29 +165,36 @@ class Monitor :
             Image f the black box inside the input image
 
         """
-        # Convert the PIL image to a numpy array
         image = np.array(image)
-        #plt.imshow(image)
-        # Convert the numpy array to a cv2 image
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-        # Convert the image to grayscale
-        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-        # Define the lower and upper boundaries of the black color
-        lower = np.array([0, 0, 0], dtype=np.uint8)
-        upper = np.array([30, 30, 30], dtype=np.uint8)
-        # Create a mask of the black pixels
-        mask = cv2.inRange(image, lower, upper)
-        # Find the contours of the black box
-        contours, _ = cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-        try:
-            # Find the bounding box of the black box
-            x, y, w, h = cv2.boundingRect(contours[0])
-            # Extract the black box from the original image using the bounding box
-            black_box = image[y:y+h, x:x+w]
-        except:
-            black_box=np.array([[]])
-        return black_box
+        gray = cv2.cvtColor(image, cv2.COLOR_RGB2GRAY)
     
+        _, binary = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV + cv2.THRESH_OTSU)
+    
+        kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+        binary = cv2.morphologyEx(binary, cv2.MORPH_OPEN, kernel, iterations=1)
+        binary = cv2.morphologyEx(binary, cv2.MORPH_CLOSE, kernel, iterations=3)
+    
+        contours, _ = cv2.findContours(binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    
+        max_area = 0
+        max_contour = None
+    
+        for contour in contours:
+            area = cv2.contourArea(contour)
+            if area > max_area:
+                max_area = area
+                max_contour = contour
+    
+        if max_contour is not None:
+            mask = np.zeros_like(gray)
+            cv2.drawContours(mask, [max_contour], 0, (255), -1)
+            black_box = cv2.bitwise_and(image, image, mask=mask)
+            black_box[mask == 0] = 0
+        else:
+            black_box = np.array([[]])
+    
+        return black_box
+
 class MonitorWindows(Monitor):
     
     def __init__(self, _id: int):
