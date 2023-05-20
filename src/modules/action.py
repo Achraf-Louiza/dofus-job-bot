@@ -63,17 +63,15 @@ class Recolt(Action):
                
     def do(self, ui_handler: UIHandler):
         ui_handler.monitor.move_cursor(self.pixel_coord_x, self.pixel_coord_y)
-        time.sleep(0.5)
-        try:
-            text_near_mouse = ui_handler.extract_text_near_cursor()
-            recoltables = config.recoltablesPerChar[self.character_name]
-            for recoltable in recoltables:
-                if recoltable in text_near_mouse:
-                    if (config.STR_RECOLTABLE_AVAILABLE in text_near_mouse or config.STR_RECOLTABLE_UNAVAILABLE not in text_near_mouse):
-                        ui_handler.monitor.click_on_mouse()
-                        return 1
-        except:
-            print(f'Error extracting text near cusor {self.pixel_coord_x}, {self.pixel_coord_y}')
+        text_near_mouse = ui_handler.extract_text_near_cursor()
+        recoltables = config.recoltablesPerChar[self.character_name]
+        for recoltable in recoltables:
+            if recoltable in text_near_mouse:
+                if (config.STR_RECOLTABLE_AVAILABLE in text_near_mouse or config.STR_RECOLTABLE_UNAVAILABLE not in text_near_mouse):
+                    ui_handler.monitor.click_on_mouse()
+                    return 1
+        """except:
+            print(f'Error extracting text near cusor {self.pixel_coord_x}, {self.pixel_coord_y}')"""
         
         return 0
 

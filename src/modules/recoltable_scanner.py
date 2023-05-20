@@ -7,6 +7,7 @@ import pandas as pd
 import sys, os
 from unidecode import unidecode
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
+import cv2
 
 class RecoltableScanner:
     """
@@ -51,7 +52,26 @@ class RecoltableScanner:
         # Create the grid using meshgrid
         self.X, self.Y = np.meshgrid(x, y)
         
+
+
+    def _has_black_regions(self, image, threshold=0.1):
+       # Convert the PIL image to a NumPy array
+       image_array = np.array(image)
     
+       # Convert the image to grayscale
+       gray = image_array.mean(axis=2)
+    
+       # Count the number of black pixels
+       black_pixel_count = np.sum(gray <= 30)  # Adjust the threshold as needed
+    
+       # Calculate the percentage of black pixels
+       image_size = gray.size
+       black_pixel_percentage = black_pixel_count / image_size
+    
+       # Check if the percentage exceeds the specified threshold
+       return black_pixel_percentage >= threshold
+
+
     def scan_grid(self, map_pos: list, monitor: Monitor, ocr: OCR, recolt: bool) -> pd.DataFrame:
         """
         Scans the grid for specific text patterns using OCR and returns a DataFrame
@@ -80,9 +100,9 @@ class RecoltableScanner:
                 b = (j if i%2==0 else len(self.X[0])- j - 1) 
                 x, y = self.X[a, b], self.Y[a, b]
                 monitor.move_cursor(x, y)
-                time.sleep(0.35)
-                black_box = monitor.get_box_near_cursor_position()
-                if black_box.shape[0]<40 or black_box.shape[1]<10:
+                black_box, original = monitor.get_box_near_cursor_position()
+                #cv2.imwrite('image.png', np.array(original))
+                if not self._has_black_regions(original):
                     text = ''
                 else:
                     text = ocr.recognize_text(black_box, config.ALPHABET_CHARS)
@@ -98,7 +118,7 @@ class RecoltableScanner:
                         print(name, x, y)
                         if recolt and (config.STR_RECOLTABLE_AVAILABLE in text and config.STR_RECOLTABLE_UNAVAILABLE not in text):
                             print(f'HERE {recolt}')
-                            if name =='ble' or name == 'bl\n' or name=='orge' or name=='seigle':
+                            if name =='ble' or name == 'bl\n' or name=='orge' or name=='seigle' or name=='houblon':
                                 monitor.click_on_mouse()
                                 time.sleep(2)
             if type(black_box) != np.ndarray:

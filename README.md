@@ -1,7 +1,9 @@
 # Project description
+
 ```diff
 -  DISCLAIMER: THIS WORK IS SOLELY FOR CHALLENGE & FUN PURPOSES. WE ARE NOT RESPONSIBLE FOR ANY MISUSE. 
 ```
+
 This is a bot for the game Dofus that automates various tasks and provides map awareness. The bot is designed to work with the desktop version of the game and uses various techniques to interact with the game's interface, including image recognition, window activation, and keyboard and mouse input.
   
 The bot includes several modules that can be used independently or in combination to achieve different goals. Some of the modules available include:  

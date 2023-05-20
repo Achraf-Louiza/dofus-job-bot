@@ -2,6 +2,7 @@ from .monitor import Monitor
 from .ocr import OCR
 from .recoltable_scanner import RecoltableScanner
 import sys, os
+from PIL import Image
 from unidecode import unidecode
 sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
 
@@ -43,7 +44,8 @@ class UIHandler:
             Text near mouse current pixel coordinates
         
         """
-        screenshot = self.monitor.get_box_near_cursor_position()
+        screenshot, _ = self.monitor.get_box_near_cursor_position()
+        screenshot = Image.fromarray(screenshot)
         text = self.ocr.recognize_text(screenshot, config.ALPHABET_CHARS)
         # Remove (accents)
         text = unidecode(text.lower())

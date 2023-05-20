@@ -104,7 +104,7 @@ class Monitor :
         screenshot_black_box = self._extract_black_box(screenshot)
         np_array = np.array(screenshot_black_box)
         inverted_array = 255 - np_array
-        return inverted_array
+        return inverted_array, screenshot
     
       
     def get_box_map_position(self) -> Image:

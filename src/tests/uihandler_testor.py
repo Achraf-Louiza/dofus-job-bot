@@ -44,7 +44,7 @@ class TestUIHandler(unittest.TestCase):
         seigle_y = 0.3 * self.monitor.height
         self.monitor.move_cursor(seigle_x, seigle_y)
         time.sleep(1)
-        screenshot = self.monitor.get_box_near_cursor_position()
+        screenshot, _ = self.monitor.get_box_near_cursor_position()
         try:
             screenshot = Image.fromarray(screenshot)
             screenshot.save(config.image_near_cursor)
