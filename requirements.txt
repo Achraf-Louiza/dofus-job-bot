@@ -1,0 +1,9 @@
+pandas
+numpy
+screeninfo
+pillow
+pyautogui
+pytesseract
+matplotlib
+unidecode
+opencv-python
