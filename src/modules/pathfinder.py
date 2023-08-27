@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-
 class Pathfinder:
     """
     A class representing that optimizes bot routes with Manhatan Distance Shortest Path

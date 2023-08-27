@@ -82,6 +82,7 @@ class TestUIHandler(unittest.TestCase):
     def test_extract_map_position(self):
         coords = [5, -25]
         detected_coords = self.ui_handler.extract_current_map_position()
+        print(detected_coords)
         assert detected_coords[0]==coords[0] and detected_coords[1]==coords[1], f'found coords: {detected_coords} are different from real coords {coords}'
         print('TEST EXTRACT MAP POSITION OK!')
     

@@ -6,7 +6,6 @@ import pytesseract
 
 # Get os type 
 OS = platform.system()
-OS_MAC = 'Darwin'
 OS_WINDOWS = 'Windows'
 
 # 
@@ -20,13 +19,13 @@ WHEAT_API_ID = 289
 NMAX_RESPONSES = 91
 
 # Recoltables
-RECOLTABLE_NAMES = ['ble', 'bie', 'bl\n', 'wheat',  'avoine', 'houblon', 'seigle', 'lin', 'orge', 'riz', 'malt', 'chanvre', 'maïs', 'millet']
+RECOLTABLE_NAMES = ['ble','wheat',  'avoine', 'houblon', 'seigle', 'lin', 'orge', 'riz', 'malt', 'chanvre', 'maïs', 'millet']
 mapToRecoltable = {x:x for x in RECOLTABLE_NAMES}
 mapToRecoltable['ble'] = 'wheat'
 mapToRecoltable['bl\n'] ='wheat'
 mapToRecoltable['bie'] = 'wheat'
 STR_RECOLTABLE_AVAILABLE = 'fauch'
-STR_RECOLTABLE_UNAVAILABLE = 'puis'
+STR_RECOLTABLE_UNAVAILABLE = 'epuis'
 
 # Recoltable pixel coordinates 
 RECOLTABLE_PIXEL_COORDINATES = "../data/recoltable_pixel_coordinates/recoltable_pixel_coords.csv"
@@ -41,15 +40,15 @@ recoltablesPerChar = {'The-blood-omni': ['orge', 'wheat', 'ble', 'bie', 'bl\n'],
                      }
 
 # Move from map position to another : You can only move RIGHT, LEFT, UP, DOWN.--------------------
-RIGHT = (0.84, 0.5)
-LEFT = (0.15, 0.7)
+RIGHT = (0.81, 0.5)
+LEFT = (0.18, 0.7)
 DOWN = (0.4, 0.86)
 UP = (0.7, 0.03)
 
 # Map position (width or height) percentage for box edges ----------------------------------------
-P_MAP_LEFT = 0.006
-P_MAP_TOP = 0.065
-P_MAP_RIGHT = 0.065
+P_MAP_LEFT = 0.0061
+P_MAP_TOP = 0.066
+P_MAP_RIGHT = 0.067
 P_MAP_BOTTOM = 0.1
 
 # Near current pixel coordiantes -----------------------------------------------------------------
@@ -57,7 +56,7 @@ P_MAP_BOTTOM = 0.1
 P_MOUSE_LEFT = 0.005
 P_MOUSE_TOP = - 0.11
 P_MOUSE_RIGHT = 0.115
-P_MOUSE_BOTTOM = 0.02
+P_MOUSE_BOTTOM = 0.019
 # Box minimal (width, height)  / Unused currently
 P_MOUSE_MIN_HEIGHT = 0
 P_MOUSE_MAX_HEIGHT = 0 

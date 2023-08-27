@@ -7,7 +7,7 @@ from .character import Character
 from .pathfinder import Pathfinder
 from .ocr import OCR
 from .recoltable_scanner import RecoltableScanner
-from .monitor import MonitorWindows
+from .monitor import Monitor
 from .ui_handler import UIHandler
 from .action import Action, MoveToMapPosition, ClickOnCoords, Recolt, ScanMapPosition
 from .pathfinder import Pathfinder
@@ -73,7 +73,7 @@ class Player:
                         print(f'HAS MOVED TO {character.map_coords}')
                         print('State updating ...')
                     else:
-                        print('Wainting for last movement to complete')
+                        print('Waiting for last movement to complete')
                         n_wait+=1
                         if n_wait == 8//len(self.characterObjs):
                             move_action = MoveToMapPosition(character.map_coords, next_destination)
@@ -115,8 +115,6 @@ class Player:
                             print(f'- Trying to recolt: {next_pixel_recolt}')
                             chars_i_next_pixel_recolt[i] += 1
                             next_pixel_recolt = self.myPC[['pixel_x', 'pixel_y']].values[chars_i_next_pixel_recolt[i]]
-                            
-                            
                         last_action[i]='recolt'
                         if chars_i_next_pixel_recolt[i] == len(self.myPC)-1:
                             action = Recolt(character.name, next_pixel_recolt)
@@ -153,7 +151,7 @@ class Player:
         recoltableScannerObj = RecoltableScanner()
         # Init monitors --------------------------
         monitors = screeninfo.get_monitors()
-        monitorObjs = [MonitorWindows(i) for i, monitor in enumerate(monitors)]
+        monitorObjs = [Monitor(i) for i, monitor in enumerate(monitors)]
         # Init UIHandlers ------------------------
         uihandlers = [UIHandler(monitorObj, ocrObj, recoltableScannerObj) for monitorObj in monitorObjs]
         return uihandlers

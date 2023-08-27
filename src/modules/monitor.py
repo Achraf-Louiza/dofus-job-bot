@@ -1,13 +1,11 @@
-from .window import WindowWindows
+from .window import Window
 import pyautogui
 import pandas
 from PIL import Image, ImageGrab, ImageFilter, ImageDraw
 import numpy as np
-import cv2 
-import os, sys
+import cv2
 import screeninfo
-import time
-sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
+import os, sys; sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
 
 class Monitor : 
     """ 
@@ -21,26 +19,53 @@ class Monitor :
         self.windows = []
         self.y_offset = 0
         self.x_offset = 0
+        self._get_dofus_windows()
+        self._get_monitor_offset()
+        if len(self.windows) != 0:
+            self.width, self.height = self.windows[0].width, self.windows[0].height
     
     def _get_dofus_windows(self):
         """
         Gets the Dofus windows associated with this monitor.
         
         """
-        pass
-        
+        monitor = screeninfo.get_monitors()[self.id]
+        _id = 0
+        for window in pyautogui.getWindowsWithTitle('Dofus'):
+            box = window.box
+            if monitor.y < box.top+50 and monitor.x < box.left+50 and monitor.height > box.height-50 and monitor.width > box.width-50:
+                # Check if window intersects with monitor
+                my_window = Window(_id, window.title, window)
+                self.windows.append(my_window)
+                _id += 1
+                
     def _get_monitor_offset(self):
         """
         Gets monitor top left coordinates
 
         """
-        pass
+        monitor_rect = screeninfo.get_monitors()[self.id]
+        # Get the top-left corner of the monitor in pixel coordinates
+        self.x_offset = monitor_rect.x 
+        self.y_offset = monitor_rect.y 
     
     def move_cursor(self, coord_x: int, coord_y: int):
-        pass
+        """
+        Moves the cursor to the specified coordinates.
+ 
+        Args:
+            coord_x (int): The x-coordinate of the destination.
+            coord_y (int): The y-coordinate of the destination.
+        """
+        x = coord_x + self.x_offset
+        y = coord_y + self.y_offset
+        pyautogui.moveTo((x, y))
     
     def click_on_mouse(self):
-        pass
+        """
+        Simulates a left-click on the mouse at the current cursor position.
+        """
+        pyautogui.click(button='left')   
     
     def focus_on_window(self, window_id: int):
         """ 
@@ -194,55 +219,3 @@ class Monitor :
             black_box = np.array([[]])
     
         return black_box
-
-class MonitorWindows(Monitor):
-    
-    def __init__(self, _id: int):
-        super().__init__(_id)
-        self._get_dofus_windows()
-        self._get_monitor_offset()
-        self.width, self.height = self.windows[0].width, self.windows[0].height
-    
-    def _get_dofus_windows(self):
-        """
-        Gets the Dofus windows associated with this monitor.
-        
-        """
-        monitor = screeninfo.get_monitors()[self.id]
-        _id = 0
-        for window in pyautogui.getWindowsWithTitle('Dofus'):
-            box = window.box
-            if monitor.y < box.top+50 and monitor.x < box.left+50 and monitor.height > box.height-50 and monitor.width > box.width-50:
-                # Check if window intersects with monitor
-                my_window = WindowWindows(_id, window.title, window)
-                self.windows.append(my_window)
-                _id += 1
-                
-    def _get_monitor_offset(self):
-        """
-        Gets monitor top left coordinates
-
-        """
-        monitor_rect = screeninfo.get_monitors()[self.id]
-        # Get the top-left corner of the monitor in pixel coordinates
-        self.x_offset = monitor_rect.x 
-        self.y_offset = monitor_rect.y 
-    
-    def move_cursor(self, coord_x: int, coord_y: int):
-        """
-        Moves the cursor to the specified coordinates.
- 
-        Args:
-            coord_x (int): The x-coordinate of the destination.
-            coord_y (int): The y-coordinate of the destination.
-        """
-        x = coord_x + self.x_offset
-        y = coord_y + self.y_offset
-        pyautogui.moveTo((x, y))
-    
-    def click_on_mouse(self):
-        """
-        Simulates a left-click on the mouse at the current cursor position.
-        """
-        pyautogui.click(button='left')   
-
