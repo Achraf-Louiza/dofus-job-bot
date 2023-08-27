@@ -7,3 +7,4 @@ pytesseract
 matplotlib
 unidecode
 opencv-python
+tqdm

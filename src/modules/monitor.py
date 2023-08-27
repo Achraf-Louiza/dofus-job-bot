@@ -5,7 +5,7 @@ from PIL import Image, ImageGrab, ImageFilter, ImageDraw
 import numpy as np
 import cv2
 import screeninfo
-import os, sys; sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
+import os, sys; sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config, settings;
 
 class Monitor : 
     """ 
@@ -122,10 +122,10 @@ class Monitor :
         """
         pos = pyautogui.position()
         pos = [pos[0]/self.width, pos[1]/self.height]
-        screenshot = self.get_box(config.P_MOUSE_LEFT + pos[0], 
-                                  config.P_MOUSE_TOP + pos[1], 
-                                  config.P_MOUSE_RIGHT + pos[0], 
-                                  config.P_MOUSE_BOTTOM + pos[1])
+        screenshot = self.get_box(settings.P_MOUSE_LEFT + pos[0], 
+                                  settings.P_MOUSE_TOP + pos[1], 
+                                  settings.P_MOUSE_RIGHT + pos[0], 
+                                  settings.P_MOUSE_BOTTOM + pos[1])
         screenshot_black_box = self._extract_black_box(screenshot)
         np_array = np.array(screenshot_black_box)
         inverted_array = 255 - np_array
@@ -134,7 +134,7 @@ class Monitor :
       
     def get_box_map_position(self) -> Image:
         """
-        Gets a screenshot of a box around map position [box relative coordinates are in config.py]
+        Gets a screenshot of a box around map position [box relative coordinates are in settings.py]
 
         Returns
         -------
@@ -142,10 +142,10 @@ class Monitor :
             Screenshot of the box around map position
 
         """
-        screenshot = self.get_box(config.P_MAP_LEFT, 
-                                  config.P_MAP_TOP, 
-                                  config.P_MAP_RIGHT, 
-                                  config.P_MAP_BOTTOM)
+        screenshot = self.get_box(settings.P_MAP_LEFT, 
+                                  settings.P_MAP_TOP, 
+                                  settings.P_MAP_RIGHT, 
+                                  settings.P_MAP_BOTTOM)
         #invert colors
         np_array = np.array(screenshot)
         inverted_array = 255 - np_array
@@ -161,7 +161,7 @@ class Monitor :
 
     def get_clickable_game_zone(self) -> Image:
         """
-        Gets a screenshot of the usable ground in the game [box relative coordiantes are in config.py]
+        Gets a screenshot of the usable ground in the game [box relative coordiantes are in settings.py]
 
         Returns
         -------
@@ -169,10 +169,10 @@ class Monitor :
             Screenshot of the box including usable ground in the game
 
         """
-        screenshot = self.get_box(config.P_GROUND_LEFT, 
-                                  config.P_GROUND_TOP, 
-                                  config.P_GROUND_RIGHT, 
-                                  config.P_GROUND_BOTTOM)
+        screenshot = self.get_box(settings.P_GROUND_LEFT, 
+                                  settings.P_GROUND_TOP, 
+                                  settings.P_GROUND_RIGHT, 
+                                  settings.P_GROUND_BOTTOM)
         return screenshot
 
     def _extract_black_box(self, image):

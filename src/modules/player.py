@@ -1,4 +1,3 @@
-from config import UP, DOWN, RIGHT, LEFT
 import config
 import pyautogui
 import numpy as np

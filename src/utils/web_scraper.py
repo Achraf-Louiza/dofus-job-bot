@@ -1,6 +1,7 @@
 import requests
 import pandas as pd
 from tqdm import tqdm
+import os, sys; sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..')))
 from config import *
 
 def get_request_map_positions(recoltable_id: int, skip: int) -> dict:

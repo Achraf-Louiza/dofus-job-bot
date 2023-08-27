@@ -2,7 +2,7 @@ from .ui_handler import UIHandler
 import pandas as pd
 import time
 import sys, os
-sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
+sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import settings, config;
 
 
 class Action :
@@ -38,16 +38,16 @@ class MoveToMapPosition(Action):
             if dx==0:
                 return []
             elif dx > 0:
-                return (config.RIGHT[0] * monitor.width, config.RIGHT[1]*monitor.height)
+                return (settings.RIGHT[0] * monitor.width, settings.RIGHT[1]*monitor.height)
             else:
-                return (config.LEFT[0] * monitor.width, config.LEFT[1]*monitor.height)
+                return (settings.LEFT[0] * monitor.width, settings.LEFT[1]*monitor.height)
         else:
             if dy==0:
                 return []
             elif dy > 0:
-                return (config.DOWN[0] * monitor.width, config.DOWN[1]*monitor.height) 
+                return (settings.DOWN[0] * monitor.width, settings.DOWN[1]*monitor.height) 
             else:
-                return (config.UP[0] * monitor.width, config.UP[1]*monitor.height) 
+                return (settings.UP[0] * monitor.width, settings.UP[1]*monitor.height) 
     
     def do(self, ui_handler: UIHandler):
         direction = self._get_direction(ui_handler)
