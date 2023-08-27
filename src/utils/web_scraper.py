@@ -93,5 +93,11 @@ def save_positions_csv(df_pos: pd.DataFrame, recoltable_name: str) -> None:
     """
     df_pos.to_csv(RECOLTABLE_MAP_POSITIONS_FILE_PATH(recoltable_name), index=False)
 
-
+def discrezte_zone(df: pd.DataFrame):
+    df.loc[(df.x<-20) & (df.y<-30), 'zone'] = 'bonta'
+    df.loc[(df.x>=3) & (df.y<=-20), 'zone'] = 'astrub'
+    df.loc[(df.x>=4) & (df.y>=4) & (df.y<=9), 'zone'] = 'village'
+    df.loc[(df.x>=0) & (df.y>=22) & (df.y<=28), 'zone'] = 'scara'
+    df = df.dropna(subset='zone').reset_index(drop=True)
+    return df
 

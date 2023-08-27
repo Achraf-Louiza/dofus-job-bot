@@ -8,3 +8,4 @@ matplotlib
 unidecode
 opencv-python
 tqdm
+plotly
