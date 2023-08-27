@@ -15,15 +15,13 @@ RECOLTABLE_MAP_BLUEPRINT_FILE_PATH =  "../data/recoltable_map_positions/recoltab
 # "Dofosdb" api url for web scraping recoltable map positions.
 DOFUSDB_API_URL =  "https://api.dofusdb.fr/recoltable"
 RECOLTABLE_NAME = 'wheat'
-WHEAT_API_ID = 289
-NMAX_RESPONSES = 91
+RECOLTABLE_IDS = {'wheat': 289, 'chanvre': 425, 'seigle': 532, 'lin': 423, 'malt': 405, 'orge': 400, 'avoine': 533, 'houblon': 401, 'riz': 7018}
+NMAX_RESPONSES = {'wheat': 91, 'chanvre': 11, 'seigle': 21, 'lin': 21, 'malt': 11, 'orge': 41, 'avoine': 41, 'houblon': 21, 'riz': 11}
 
 # Recoltables
 RECOLTABLE_NAMES = ['ble','wheat',  'avoine', 'houblon', 'seigle', 'lin', 'orge', 'riz', 'malt', 'chanvre', 'maïs', 'millet']
 mapToRecoltable = {x:x for x in RECOLTABLE_NAMES}
 mapToRecoltable['ble'] = 'wheat'
-mapToRecoltable['bl\n'] ='wheat'
-mapToRecoltable['bie'] = 'wheat'
 STR_RECOLTABLE_AVAILABLE = 'fauch'
 STR_RECOLTABLE_UNAVAILABLE = 'epuis'
 
@@ -34,9 +32,9 @@ RECOLTABLE_PIXEL_COORDINATES = "../data/recoltable_pixel_coordinates/recoltable_
 ALPHABET_CHARS = string.ascii_lowercase + string.ascii_uppercase + 'éèê'
 COORDINATES_CHARS = '0123456789,-'
 
-recoltablesPerChar = {'The-blood-omni': ['orge', 'wheat', 'ble', 'bie', 'bl\n'],
+recoltablesPerChar = {'The-blood-omni': ['orge', 'wheat', 'ble'],
                       'Guelaa-tiempo': RECOLTABLE_NAMES,
-                      'Chef-rox': ['wheat', 'ble', 'bie', 'bl\n']
+                      'Chef-rox': ['wheat', 'ble']
                      }
 
 # Test variables
