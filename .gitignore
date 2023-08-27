@@ -1,0 +1,7 @@
+"# Ignore Python cache and compilation files" 
+"__pycache__/" 
+"*.py[cod]" 
+"" 
+"# Ignore Jupyter notebook checkpoints" 
+".ipynb_checkpoints/" 
+"*.ipynb_checkpoints" 
