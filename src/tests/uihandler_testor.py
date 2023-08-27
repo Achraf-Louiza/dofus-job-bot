@@ -3,7 +3,7 @@ import win32gui
 import sys
 sys.path.insert(0, '..')
 import config
-from modules.monitor import MonitorWindows
+from modules.monitor import Monitor
 from modules.ocr import OCR
 from modules.recoltable_scanner import RecoltableScanner
 from modules.ui_handler import UIHandler
@@ -15,7 +15,7 @@ from pathlib import Path
 
 class TestUIHandler(unittest.TestCase):
     def __init__(self):
-        self.monitor = MonitorWindows(0)
+        self.monitor = Monitor(0)
         self.monitor.windows[0].focus()
         self.ocr = OCR()
         self.recoltable_scanner = RecoltableScanner()
