@@ -6,7 +6,7 @@ import time
 import pandas as pd
 import sys, os
 from unidecode import unidecode
-sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config
+sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config, settings;
 import cv2
 
 class RecoltableScanner:
@@ -41,13 +41,13 @@ class RecoltableScanner:
             
         """
         # Define the x and y ranges
-        x = range(int((config.P_GROUND_LEFT+0.01) * monitor.width + monitor.x_offset), 
-                  int((config.P_GROUND_RIGHT+0.01) * monitor.width + monitor.x_offset), 
-                  int(config.P_SCAN_X_SKIP*monitor.width))
+        x = range(int((settings.P_GROUND_LEFT+0.01) * monitor.width + monitor.x_offset), 
+                  int((settings.P_GROUND_RIGHT+0.01) * monitor.width + monitor.x_offset), 
+                  int(settings.P_SCAN_X_SKIP*monitor.width))
         
-        y = range(int((config.P_GROUND_TOP+0.04) * monitor.height + monitor.y_offset), 
-                  int((config.P_GROUND_BOTTOM-0.025) * monitor.height + monitor.y_offset), 
-                  int(config.P_SCAN_Y_SKIP*monitor.height))
+        y = range(int((settings.P_GROUND_TOP+0.04) * monitor.height + monitor.y_offset), 
+                  int((settings.P_GROUND_BOTTOM-0.025) * monitor.height + monitor.y_offset), 
+                  int(settings.P_SCAN_Y_SKIP*monitor.height))
         
         # Create the grid using meshgrid
         self.X, self.Y = np.meshgrid(x, y)
@@ -118,21 +118,34 @@ class RecoltableScanner:
                         print(name, x, y)
                         if recolt and (config.STR_RECOLTABLE_AVAILABLE in text and config.STR_RECOLTABLE_UNAVAILABLE not in text):
                             print(f'HERE {recolt}')
-                            if name =='ble' or name == 'bl\n' or name=='orge' or name=='seigle' or name=='houblon':
-                                monitor.click_on_mouse()
-                                time.sleep(2)
+                            #if name =='ble' or name == 'bl\n' or name=='orge' or name=='seigle' or name=='houblon':
+                            monitor.click_on_mouse()
+                            time.sleep(2)
             if type(black_box) != np.ndarray:
                 black_box.close()
             
-        df = pd.DataFrame({'recoltable': recoltable_names, 'x': [map_pos[0]]*len(x_coords), 'y': [map_pos[1]]*len(x_coords), 'pixel_x': x_coords, 'pixel_y': y_coords})
+        df = pd.DataFrame({'x': [map_pos[0]]*len(x_coords), 'y': [map_pos[1]]*len(x_coords), 'pixel_x': x_coords, 'pixel_y': y_coords})
         df['pixel_x'] = df['pixel_x'].map(lambda x: round(x/monitor.width, 3))
         df['pixel_y'] = df['pixel_y'].map(lambda x: round(x/monitor.height, 3))
         try:
             origin = pd.read_csv(config.RECOLTABLE_PIXEL_COORDINATES)
         except:
             origin = pd.DataFrame()
+        for col in origin.columns[4:]:
+            df[col] = 0
+        for i, recoltable in enumerate(recoltable_names):
+            df.loc[i, recoltable] = 1
+        df = self.discrete_zone(df)
         df = pd.concat([origin, df], ignore_index=True)
         df = df.drop_duplicates()
         df.to_csv(config.RECOLTABLE_PIXEL_COORDINATES, index=False)
+        return df
+    
+    def discrete_zone(self, df: pd.DataFrame):
+        df.loc[(df.x<-20) & (df.y<-30), 'zone'] = 'bonta'
+        df.loc[(df.x>=3) & (df.y<=-20), 'zone'] = 'astrub'
+        df.loc[(df.x>=4) & (df.y>=4) & (df.y<=9), 'zone'] = 'village'
+        df.loc[(df.x>=0) & (df.y>=22) & (df.y<=28), 'zone'] = 'scara'
+        df = df.dropna(subset='zone').reset_index(drop=True)
         return df
         

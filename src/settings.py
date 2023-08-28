@@ -5,9 +5,9 @@ DOWN = (0.4, 0.86)
 UP = (0.7, 0.03)
 
 # Map position (width or height) percentage for box edges ----------------------------------------
-P_MAP_LEFT = 0.0061
-P_MAP_TOP = 0.066
-P_MAP_RIGHT = 0.067
+P_MAP_LEFT = 0.006
+P_MAP_TOP = 0.065
+P_MAP_RIGHT = 0.058
 P_MAP_BOTTOM = 0.1
 
 # Near current pixel coordiantes -----------------------------------------------------------------

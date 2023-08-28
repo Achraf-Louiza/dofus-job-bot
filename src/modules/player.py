@@ -38,11 +38,16 @@ class Player:
             self.char_pixel_coords =[self.pixel_coords for _ in range(len(self.characterObjs))]
             if len(self.pixel_coords)!=0:        
                 for i, char in enumerate(self.characterObjs):
-                    self.char_pixel_coords[i] = self.pixel_coords[self.pixel_coords.recoltable.map(lambda x: x in config.recoltablesPerChar[char.name])]
+                    # Filter on zone affected
+                    self.char_pixel_coords[i] = self.pixel_coords[self.pixel_coords.zone == config.zoneAffectation[char.name]]
+                    # Filter on allowed recoltables
+                    self.char_pixel_coords[i] = self.char_pixel_coords[i][self.char_pixel_coords[i].apply(lambda row: np.array([row.loc[x] for x in config.recoltablesPerChar[char.name] if x in row.index]).any(), axis=1)]
+                    # Adapt pixel coords to screen size
                     self.char_pixel_coords[i]['pixel_x'] = self.char_pixel_coords[i]['pixel_x'].map(lambda x: round(x*uihandlers[0].monitor.width))
                     self.char_pixel_coords[i]['pixel_y'] = self.char_pixel_coords[i]['pixel_y'].map(lambda x: round(x*uihandlers[0].monitor.height))
         except:
-            self.pixel_coords = pd.DataFrame(columns=['recoltable', 'x', 'y', 'pixel_x', 'pixel_y'])
+            print('ABSOLYTE ERROR !!!')
+            self.pixel_coords = pd.DataFrame(columns=self.char_pixel_coords[0].columns)
             self.char_pixel_coords =[self.pixel_coords for _ in range(len(self.characterObjs))]
 
         # FINAL PART: Run global strategy
@@ -163,6 +168,8 @@ class Player:
                 character_name = '-'.join(window.name.split('-')[:-1]).strip()
                 window.focus()
                 time.sleep(0.5)
+                pyautogui.press('&')
+                time.sleep(1.5)
                 character = Character(window.id, character_name, 100, True, uihandler)
                 characterObjs.append(character)
         return characterObjs
@@ -172,7 +179,6 @@ class Player:
         # We suppose all the characters have the same set of destinations
         
         # Characters sorted list of destinations
-        destinations = [coords[['x', 'y']].drop_duplicates().values.tolist() for _ in range(len(self.characterObjs))]
+        destinations = [coords[coords.zone==config.zoneAffectation[character.name]][['x', 'y']].drop_duplicates().values.tolist() for character in self.characterObjs]
         destinations = [self.pathfinderObj.shortest_path_nearest_neighbors(character.map_coords, destinations[i]) for i, character in enumerate(self.characterObjs)]
         return destinations
-   
