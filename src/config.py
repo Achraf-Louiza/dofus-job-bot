@@ -8,11 +8,14 @@ import pytesseract
 OS = platform.system()
 OS_WINDOWS = 'Windows'
 
-# 
+
 # Recoltable map positions file path------------------------------------------------------------------------------------------------
 RECOLTABLE_MAP_BLUEPRINT_FILE_PATH =  "../data/recoltable_map_positions/recoltables_blueprint.csv"
 # Recoltable pixel coordinates 
 RECOLTABLE_PIXEL_COORDINATES = "../data/recoltable_pixel_coordinates/recoltable_pixel_coords.csv"
+# Infight reference image
+INFIGHT_REFERENCE_PATH = "../data/images/infight_reference.png"
+
 
 # Recoltables ----------------------------------------------------------------------------------------------------------------------
 RECOLTABLE_NAMES = ['ble','wheat',  'avoine', 'houblon', 'seigle', 'lin', 'orge', 'riz', 'malt', 'chanvre', 'maïs', 'millet']

@@ -5,9 +5,9 @@ DOWN = (0.4, 0.86)
 UP = (0.7, 0.03)
 
 # Map position (width or height) percentage for box edges ----------------------------------------
-P_MAP_LEFT = 0.006
-P_MAP_TOP = 0.065
-P_MAP_RIGHT = 0.058
+P_MAP_LEFT = 0.005
+P_MAP_TOP = 0.06
+P_MAP_RIGHT = 0.05
 P_MAP_BOTTOM = 0.1
 
 # Near current pixel coordiantes -----------------------------------------------------------------
@@ -29,3 +29,21 @@ P_GROUND_BOTTOM =0.85
 # Scanner percentage of inbetween edge size in the grid search
 P_SCAN_X_SKIP = 0.035
 P_SCAN_Y_SKIP = 0.035
+
+# In fight detection screenshot -----------------------------------------------------------------
+P_INFIGHT_LEFT = 0.68
+P_INFIGHT_TOP = 0.88
+P_INFIGHT_RIGHT = 0.74
+P_INFIGHT_BOTTOM = 0.98
+
+# In fight surrender coords ---------------------------------------------------------------------
+P_SURRENDER_X = 0.75
+P_SURRENDER_Y = 0.96
+
+# Free spirit button ----------------------------------------------------------------------------
+P_FREE_SPIRIT_YES_X = 0.46
+P_FREE_SPIRIT_YES_Y = 0.6
+
+# Free spirit button ----------------------------------------------------------------------------
+PHOENIX_X = 0.47
+PHOENIX_Y = 0.5

@@ -158,7 +158,25 @@ class Monitor :
         return result_image
     
     
+    def get_box_infight(self) -> Image:
+        """
+        Gets a screenshot of a box around map position [box relative coordinates are in settings.py]
 
+        Returns
+        -------
+        Image
+            Screenshot of the box around map position
+
+        """
+        screenshot = self.get_box(settings.P_INFIGHT_LEFT, 
+                                  settings.P_INFIGHT_TOP, 
+                                  settings.P_INFIGHT_RIGHT, 
+                                  settings.P_INFIGHT_BOTTOM)
+        np_array = np.array(screenshot)
+        # Create a PIL image from the RGB array
+        result_image = Image.fromarray(np_array)
+        return result_image
+    
     def get_clickable_game_zone(self) -> Image:
         """
         Gets a screenshot of the usable ground in the game [box relative coordiantes are in settings.py]

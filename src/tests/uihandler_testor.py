@@ -1,8 +1,9 @@
 import pyautogui
 import win32gui
+import numpy as np
 import sys
 sys.path.insert(0, '..')
-import config
+import config, settings
 from modules.monitor import Monitor
 from modules.ocr import OCR
 from modules.recoltable_scanner import RecoltableScanner
@@ -35,6 +36,37 @@ class TestUIHandler(unittest.TestCase):
             print('TEST SCREENSHOT MAP POSITION OK')
         except:
             print("Screenshot map position saving has failed!")
+    
+    def test_screenshot_infight_img(self):
+        screenshot = self.monitor.get_box_infight()
+        try:
+            screenshot.save(config.image_coords_path)
+            print('TEST SCREENSHOT INFIGHT OK')
+        except:
+            print("Screenshot INFIGHT saving has failed!")
+        return screenshot
+    
+    def test_surrender_button_pos(self):
+        self.ui_handler.click_on_pixel(self.monitor.width*settings.P_SURRENDER_X, self.monitor.height*settings.P_SURRENDER_Y)
+        pyautogui.press('enter')
+        time.sleep(1)
+        self.ui_handler.click_on_pixel(self.monitor.width*settings.P_FREE_SPIRIT_YES_X, self.monitor.height*settings.P_FREE_SPIRIT_YES_Y)
+        time.sleep(1)
+        pyautogui.press('esc')
+        self.ui_handler.click_on_pixel(self.monitor.width*settings.LEFT[0], self.monitor.height*settings.LEFT[1])
+        time.sleep(3)
+        self.ui_handler.click_on_pixel(self.monitor.width*settings.PHOENIX_X, self.monitor.height*settings.PHOENIX_Y)
+        time.sleep(3)
+        pyautogui.press('&')
+        
+    def measure(self, img1, img2):
+        # Calculate Mean Squared Error (MSE)
+        mae = np.mean(np.abs((img1 - img2)))
+        # Normalize the MSE score between 0 and 1 (lower values indicate higher similarity)
+        max_pixel_value = 255  # For grayscale images
+        similarity_score = 1 - (mae / max_pixel_value)
+        return similarity_score
+
     
     def test_screenshot_near_cursor_img(self):
         time.sleep(1)

@@ -1,5 +1,7 @@
 import config
 import pyautogui
+from skimage import measure
+from PIL import Image
 import numpy as np
 import pandas as pd
 from .character import Character
@@ -12,6 +14,7 @@ from .action import Action, MoveToMapPosition, ClickOnCoords, Recolt, ScanMapPos
 from .pathfinder import Pathfinder
 import screeninfo
 import time
+import os, sys; sys.path.insert(1, os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))) ; import config, settings;
 
 class Player:
     """
@@ -49,7 +52,10 @@ class Player:
             print('ABSOLYTE ERROR !!!')
             self.pixel_coords = pd.DataFrame(columns=self.char_pixel_coords[0].columns)
             self.char_pixel_coords =[self.pixel_coords for _ in range(len(self.characterObjs))]
-
+        
+        # Infight reference screenshot
+        img = Image.open(config.INFIGHT_REFERENCE_PATH)
+        self.img_ref = np.array(img)
         # FINAL PART: Run global strategy
         self.run_recolting_strategy()
         
@@ -66,78 +72,89 @@ class Player:
             for i, (character, destination) in enumerate(zip(self.characterObjs, self.characters_destinations_coords)):
                 character.ui_handler.focus_on_character(character.id)
                 time.sleep(1)
-                print('----------------------------------------------------------')
-                print(f'I am here {character.map_coords}')
-                # Updating states -------------------------------------------------------------------------------------
-                
-                print(f'- last action: {last_action[i]}')
-                if last_action[i] == 'move' :
-                    if character.has_moved():
-                        character.update_map_coords()
-                        print(f'HAS MOVED TO {character.map_coords}')
-                        print('State updating ...')
-                    else:
-                        print('Waiting for last movement to complete')
-                        n_wait+=1
-                        if n_wait == 8//len(self.characterObjs):
+                # Check if infight
+                img_infight = np.array(character.ui_handler.monitor.get_box_infight())
+                similarity_score = self._measure_sim_images(self.img_ref, img_infight)
+                print(similarity_score)
+                if similarity_score < 0.9:
+                    self._handle_infight(character.ui_handler)
+                    time.sleep(2)
+                    character.map_coords = character.read_current_position()
+                else:
+                    print('----------------------------------------------------------')
+                    print(f'I am here {character.map_coords}')
+                    # Updating states -------------------------------------------------------------------------------------
+                    print(f'- last action: {last_action[i]}')
+                    if last_action[i] == 'move' :
+                        if character.has_moved():
+                            character.update_map_coords()
+                            print(f'HAS MOVED TO {character.map_coords}')
+                            print('State updating ...')
+                            n_wait = 0
+                        else:
+                            print('Waiting for last movement to complete')
+                            n_wait+=1
+                            if n_wait == 8//len(self.characterObjs):
+                                move_action = MoveToMapPosition(character.map_coords, next_destination)
+                                character.execute_action(move_action)        
+                            elif n_wait == 16//len(self.characterObjs):
+                                move_action = MoveToMapPosition(character.map_coords, [np.random.randint(-20, 20), np.random.randint(-20, 20)])
+                                character.execute_action(move_action)
+                            continue
+                    elif last_action[i] == 'recolt':
+                       if recolted:
+                           if (time.time()-recolt_time[i]) < 3:
+                               continue
+                           if chars_i_next_pixel_recolt[i] == len(self.char_pixel_coords[i]) - 1:
+                               recolted = False
+                               continue
+                           
+                    next_destination = destination[chars_i_destinations[i]]
+                    # Doing one action -------------------------------------------------------------------------------------
+      
+                    if not character.has_arrived(next_destination[0], next_destination[1]):
+                        print(f'Next destination {next_destination}')
+                        # MOVE ONE STEP(RIGHT, LEFT, ...) TOWARDS the map position destination
+                        try:
                             move_action = MoveToMapPosition(character.map_coords, next_destination)
                             character.execute_action(move_action)
-                            n_wait = 0
-                        continue
-                elif last_action[i] == 'recolt':
-                   if recolted:
-                       if (time.time()-recolt_time[i]) < 3:
-                           continue
-                       if chars_i_next_pixel_recolt[i] == len(self.char_pixel_coords[i]) - 1:
-                           recolted = False
-                           continue
-                       
-                next_destination = destination[chars_i_destinations[i]]
-                # Doing one action -------------------------------------------------------------------------------------
-  
-                if not character.has_arrived(next_destination[0], next_destination[1]):
-                    print(f'Next destination {next_destination}')
-                    # MOVE ONE STEP(RIGHT, LEFT, ...) TOWARDS the map position destination
-                    try:
-                        move_action = MoveToMapPosition(character.map_coords, next_destination)
-                        character.execute_action(move_action)
-                        last_action[i] = 'move'
-                    except:
-                        print(f'FAILED,start({character.map_coords}), destination({next_destination})')
-                else:
-                    # Do you know the pixel coords for this map position ? 
-                    self.myPC =  self.char_pixel_coords[i][( self.char_pixel_coords[i]['x']==next_destination[0]) & ( self.char_pixel_coords[i]['y']==next_destination[1])]
-                    if len(self.myPC.dropna(subset=['x'])) != 0:
-                        # RECOLT ONE BLOCK OF RECOLTABLE
-                        # get recoltables pixel coords of the current map position
-                        next_pixel_recolt = self.myPC[['pixel_x', 'pixel_y']].values[chars_i_next_pixel_recolt[i]]
-                        print('Checking/Recolting recoltables ...')
-                        recolted = False
-                        while not recolted and  chars_i_next_pixel_recolt[i]<len(self.myPC)-1:
-                            action = Recolt(character.name, next_pixel_recolt)
-                            recolted = character.execute_action(action)
-                            print(f'- Trying to recolt: {next_pixel_recolt}')
-                            chars_i_next_pixel_recolt[i] += 1
-                            next_pixel_recolt = self.myPC[['pixel_x', 'pixel_y']].values[chars_i_next_pixel_recolt[i]]
-                        last_action[i]='recolt'
-                        if chars_i_next_pixel_recolt[i] == len(self.myPC)-1:
-                            action = Recolt(character.name, next_pixel_recolt)
-                            recolted = character.execute_action(action)
-                            print(f'- Last pixel to recolt: {next_pixel_recolt}')
-                            chars_i_destinations[i] += 1
-                            chars_i_next_pixel_recolt[i] = 0
-                        if recolted:    
-                            recolt_time[i] = time.time()
+                            last_action[i] = 'move'
+                        except:
+                            print(f'FAILED,start({character.map_coords}), destination({next_destination})')
                     else:
-                        print('Scanning recoltables ...')
-                        # SCAN ALL THE GRID FOR THE CURRENT CHARACTER - others on hold
-                        scan_action = ScanMapPosition(next_destination, self.map_blueprint)
-                        character.execute_action(scan_action)
-                        last_action[i]='scan'
-                        chars_i_destinations[i] += 1
+                        # Do you know the pixel coords for this map position ? 
+                        self.myPC =  self.char_pixel_coords[i][( self.char_pixel_coords[i]['x']==next_destination[0]) & ( self.char_pixel_coords[i]['y']==next_destination[1])]
+                        if len(self.myPC.dropna(subset=['x'])) != 0:
+                            # RECOLT ONE BLOCK OF RECOLTABLE
+                            # get recoltables pixel coords of the current map position
+                            next_pixel_recolt = self.myPC[['pixel_x', 'pixel_y']].values[chars_i_next_pixel_recolt[i]]
+                            print('Checking/Recolting recoltables ...')
+                            recolted = False
+                            while not recolted and  chars_i_next_pixel_recolt[i]<len(self.myPC)-1:
+                                action = Recolt(character.name, next_pixel_recolt)
+                                recolted = character.execute_action(action)
+                                print(f'- Trying to recolt: {next_pixel_recolt}')
+                                chars_i_next_pixel_recolt[i] += 1
+                                next_pixel_recolt = self.myPC[['pixel_x', 'pixel_y']].values[chars_i_next_pixel_recolt[i]]
+                            last_action[i]='recolt'
+                            if chars_i_next_pixel_recolt[i] == len(self.myPC)-1:
+                                action = Recolt(character.name, next_pixel_recolt)
+                                recolted = character.execute_action(action)
+                                print(f'- Last pixel to recolt: {next_pixel_recolt}')
+                                chars_i_destinations[i] += 1
+                                chars_i_next_pixel_recolt[i] = 0
+                            if recolted:    
+                                recolt_time[i] = time.time()
+                        else:
+                            print('Scanning recoltables ...')
+                            # SCAN ALL THE GRID FOR THE CURRENT CHARACTER - others on hold
+                            scan_action = ScanMapPosition(next_destination, self.map_blueprint)
+                            character.execute_action(scan_action)
+                            last_action[i]='scan'
+                            chars_i_destinations[i] += 1
                     time.sleep(1)
         
-        
+       
     def _has_completed(self):
         for i, destinations in enumerate(self.characters_destinations_coords):
             if not self.characterObjs[i].has_arrived(destinations[-1][0], destinations[-1][1]):
@@ -182,3 +199,27 @@ class Player:
         destinations = [coords[coords.zone==config.zoneAffectation[character.name]][['x', 'y']].drop_duplicates().values.tolist() for character in self.characterObjs]
         destinations = [self.pathfinderObj.shortest_path_nearest_neighbors(character.map_coords, destinations[i]) for i, character in enumerate(self.characterObjs)]
         return destinations
+
+    def _handle_infight(self, uihandler):
+        uihandler.click_on_pixel(uihandler.monitor.width*settings.P_SURRENDER_X, uihandler.monitor.height*settings.P_SURRENDER_Y)
+        time.sleep(2)
+        pyautogui.press('enter')
+        time.sleep(1.5)
+        uihandler.click_on_pixel(uihandler.monitor.width*settings.P_FREE_SPIRIT_YES_X, uihandler.monitor.height*settings.P_FREE_SPIRIT_YES_Y)
+        time.sleep(1.5)
+        pyautogui.press('esc')
+        time.sleep(1.5)
+        uihandler.click_on_pixel(uihandler.monitor.width*settings.LEFT[0], uihandler.monitor.height*settings.LEFT[1])
+        time.sleep(3)
+        uihandler.click_on_pixel(uihandler.monitor.width*settings.PHOENIX_X, uihandler.monitor.height*settings.PHOENIX_Y)
+        time.sleep(3)
+        pyautogui.press('&')
+
+        
+    def _measure_sim_images(self, img1, img2):
+        # Calculate Mean Squared Error (MSE)
+        mae = np.mean(np.abs((img1 - img2)))
+        # Normalize the MSE score between 0 and 1 (lower values indicate higher similarity)
+        max_pixel_value = 255  # For grayscale images
+        similarity_score = 1 - (mae / max_pixel_value)
+        return similarity_score

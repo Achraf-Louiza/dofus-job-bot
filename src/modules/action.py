@@ -110,5 +110,5 @@ class Recolt_all(Action):
                     if config.STR_RECOLTABLE_AVAILABLE in text_near_mouse or config.STR_RECOLTABLE_UNAVAILABLE not in text_near_mouse:
                         ui_handler.monitor.click_on_mouse()
                         time.sleep(3)
-                        
+
                     
