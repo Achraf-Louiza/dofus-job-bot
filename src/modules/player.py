@@ -98,7 +98,7 @@ class Player:
                                 n = 8
                                 sleep_time = 1
                             else:
-                                n = 6
+                                n = 4
                                 sleep_time = 0.2
                             if n_wait == n//len(self.characterObjs):
                                 move_action = MoveToMapPosition(character.map_coords, next_destination)
