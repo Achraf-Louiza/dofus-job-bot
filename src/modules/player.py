@@ -77,7 +77,7 @@ class Player:
                 similarity_score = self._measure_sim_images(self.img_ref, img_infight)
                 print(similarity_score)
                 if similarity_score < 0.9:
-                    self._handle_infight(character.ui_handler)
+                    self._handle_infight(character)
                     time.sleep(2)
                     character.map_coords = character.read_current_position()
                 else:
@@ -94,17 +94,30 @@ class Player:
                         else:
                             print('Waiting for last movement to complete')
                             n_wait+=1
-                            if n_wait == 8//len(self.characterObjs):
+                            if len(self.characterObjs)==1:
+                                n = 8
+                                sleep_time = 1
+                            else:
+                                n = 6
+                                sleep_time = 0.2
+                            if n_wait == n//len(self.characterObjs):
                                 move_action = MoveToMapPosition(character.map_coords, next_destination)
                                 character.execute_action(move_action)        
-                            elif n_wait == 16//len(self.characterObjs):
-                                move_action = MoveToMapPosition(character.map_coords, [np.random.randint(-20, 20), np.random.randint(-20, 20)])
+                            elif n_wait > n//len(self.characterObjs):
+                                R = character.map_coords
+                                dest = [settings.LEFT, settings.RIGHT, settings.UP, settings.DOWN]
+                                random_i = np.random.randint(0, 4)
+                                R = [R[0]+dest[random_i][0], R[1] + dest[random_i][1]]
+                                move_action = MoveToMapPosition(character.map_coords, R)
                                 character.execute_action(move_action)
+                            time.sleep(sleep_time)
+                            print('WAITING VARIABLE IS: {} ---------------------------------'.format(n_wait))
                             continue
                     elif last_action[i] == 'recolt':
                        if recolted:
                            if (time.time()-recolt_time[i]) < 3:
                                continue
+                           
                            if chars_i_next_pixel_recolt[i] == len(self.char_pixel_coords[i]) - 1:
                                recolted = False
                                continue
@@ -186,7 +199,11 @@ class Player:
                 window.focus()
                 time.sleep(0.5)
                 pyautogui.press('&')
-                time.sleep(1.5)
+                time.sleep(1)
+                if config.zoneAffectation[character_name] == 'astrub':
+                    for _ in range(4):
+                        uihandler.click_on_pixel(uihandler.monitor.width*settings.LEFT[0], uihandler.monitor.height*settings.LEFT[1])
+                        time.sleep(2.5)
                 character = Character(window.id, character_name, 100, True, uihandler)
                 characterObjs.append(character)
         return characterObjs
@@ -200,7 +217,8 @@ class Player:
         destinations = [self.pathfinderObj.shortest_path_nearest_neighbors(character.map_coords, destinations[i]) for i, character in enumerate(self.characterObjs)]
         return destinations
 
-    def _handle_infight(self, uihandler):
+    def _handle_infight(self, character):
+        uihandler = character.uihandler
         uihandler.click_on_pixel(uihandler.monitor.width*settings.P_SURRENDER_X, uihandler.monitor.height*settings.P_SURRENDER_Y)
         time.sleep(2)
         pyautogui.press('enter')
@@ -209,12 +227,14 @@ class Player:
         time.sleep(1.5)
         pyautogui.press('esc')
         time.sleep(1.5)
-        uihandler.click_on_pixel(uihandler.monitor.width*settings.LEFT[0], uihandler.monitor.height*settings.LEFT[1])
-        time.sleep(3)
-        uihandler.click_on_pixel(uihandler.monitor.width*settings.PHOENIX_X, uihandler.monitor.height*settings.PHOENIX_Y)
-        time.sleep(3)
+        if config.zoneAffectation[character.name] == 'bonta':
+            uihandler.click_on_pixel(uihandler.monitor.width*settings.LEFT[0], uihandler.monitor.height*settings.LEFT[1])
+            time.sleep(3)
+            uihandler.click_on_pixel(uihandler.monitor.width*settings.PHOENIX_X, uihandler.monitor.height*settings.PHOENIX_Y)
+            time.sleep(3)
+        else:
+            pass
         pyautogui.press('&')
-
         
     def _measure_sim_images(self, img1, img2):
         # Calculate Mean Squared Error (MSE)

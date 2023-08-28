@@ -118,9 +118,9 @@ class RecoltableScanner:
                         print(name, x, y)
                         if recolt and (config.STR_RECOLTABLE_AVAILABLE in text and config.STR_RECOLTABLE_UNAVAILABLE not in text):
                             print(f'HERE {recolt}')
-                            #if name =='ble' or name == 'bl\n' or name=='orge' or name=='seigle' or name=='houblon':
-                            monitor.click_on_mouse()
-                            time.sleep(2)
+                            if name =='ble' or name == 'bl\n' or name=='orge' or name=='seigle' or name=='houblon':
+                                monitor.click_on_mouse()
+                                time.sleep(2)
             if type(black_box) != np.ndarray:
                 black_box.close()
             
